@@ -1,4 +1,8 @@
+
+# Ignore Gradle project-specific cache directory
 .gradle
+
+# Ignore Gradle build output directory
 **/build/
 !src/**/build/
 
@@ -8,14 +12,31 @@ gradle-app.setting
 # Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
 !gradle-wrapper.jar
 
-# Avoid ignore Gradle wrappper properties
+# Avoid ignore Gradle wrapper properties
 !gradle-wrapper.properties
 
 # Cache of project
 .gradletasknamecache
 
 # Eclipse Gradle plugin generated files
+
 # Eclipse Core
 .project
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
+
+# Idea generated files
+.idea/
+
+# Python generate files
+*.pyc
+__pycache__/
+*.egg-info/
+dist/
+requirements.txt
+
+# macOS and other files
+*.log
+*.dat
+*.bak
+.DS_Store
