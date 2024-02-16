@@ -129,6 +129,30 @@ task compileQrc(type: Task) {
 
 /***** Install Group */
 
+/* Install application build tools using Global space */
+task installBuildTools(type: Task) {
+  group = 'Build'
+  description = 'Install application build tools using Global space'
+  doLast {
+    buildToolsFile.setText("###### Build Tools Files for $project.name ######\n\n")
+    println "Installing \"${project.name}\" build tools: "
+    println "Packages:"
+    rootProject.buildTools.each { tool ->
+      println "  |-${tool.trim()}"
+      buildToolsFile.append("${tool.trim()}\n")
+    }
+    println "Space: --global"
+    def args = [
+      rootProject.python, '-m', 'pip', 'install', '-q',
+      project.ext.space, '--upgrade', '-r', buildToolsFile,
+      '--no-warn-script-location', '--break-system-packages'
+    ]
+    exec {
+      commandLine args.flatten()
+    }
+  }
+}
+
 /* Find and update __init__ files */
 task syncPythonPackages(type: Task) {
   group = 'Build'
