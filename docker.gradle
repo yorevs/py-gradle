@@ -28,7 +28,9 @@ Collection filesByPattern(String baseDir, String pattern) {
 }
 
 /* Docker Containers -------------------------------------------------------- */
-project.ext.containers = findProperty('containers') ?: []
+ext {
+  containers = findProperty('containers') ?: []
+}
 
 /* Tasks ------------------------------------------------------------------- */
 
