@@ -104,7 +104,7 @@ task compilePython(type: Task) {
     }.each { File file ->
         if (verbose) println "Compiling Python file -> ${file.name}"
         exec {
-          commandLine rootProject.python, '-m', 'py_compile', file.path
+          commandLine project.python, '-m', 'py_compile', file.path
         }
       }
   }
@@ -121,7 +121,7 @@ task compileQrc(type: Task) {
     }.each { File file ->
         if (verbose) println "Compiling Qt Resource -> ${file.name}"
         exec {
-          commandLine rootProject.pyrcc, '-m', 'py_compile', file.path
+          commandLine project.pyrcc, '-m', 'py_compile', file.path
         }
       }
   }
@@ -137,13 +137,13 @@ task installBuildTools(type: Task) {
     buildToolsFile.setText("###### Build Tools Files for $project.name ######\n\n")
     println "Installing \"${project.name}\" build tools: "
     println "Packages:"
-    rootProject.buildTools.each { tool ->
+    project.buildTools.each { tool ->
       println "  |-${tool.trim()}"
       buildToolsFile.append("${tool.trim()}\n")
     }
     println "Space: --global"
     def args = [
-      rootProject.python, '-m', 'pip', 'install', '-q',
+      project.python, '-m', 'pip', 'install', '-q',
       project.ext.space, '--upgrade', '-r', buildToolsFile,
       '--no-warn-script-location', '--break-system-packages'
     ]
@@ -202,7 +202,7 @@ task installModule(type: Task) {
     }.each { File module ->
         def moduleDir = dirName(module)
         def args = [
-          rootProject.python, '-m', 'pip', 'install', '-e', "${sourceRoot}/main",
+          project.python, '-m', 'pip', 'install', '-e', "${sourceRoot}/main",
           '--break-system-packages'
         ]
         println "Install [Editable] module ${project.name} : ${moduleDir} -> ${module.path}"
@@ -226,12 +226,12 @@ task install(type: Task) {
     }.each { File module ->
         def moduleDir = dirName(module)
         def args = [
-          rootProject.python, '-m', 'pip', 'install', '-q',
-          rootProject.space, '--upgrade', moduleDir,
+          project.python, '-m', 'pip', 'install', '-q',
+          project.space, '--upgrade', moduleDir,
           '--break-system-packages'
         ]
-        println "Installing ${project.name} v${project.ext.app_version} using ${rootProject.python}"
-        println "Space: ${rootProject.space}"
+        println "Installing ${project.name} v${project.ext.app_version} using ${project.python}"
+        println "Space: ${project.space}"
         exec {
           workingDir "${moduleDir}"
           commandLine args.flatten()
@@ -250,7 +250,7 @@ task uninstall(type: Task) {
     }.each { File module ->
         def moduleDir = "${module.path.replace(module.name, "")}"
         def args = [
-          rootProject.python, '-m', 'pip', 'uninstall', '-y', '-q', project.ext.app_name,
+          project.python, '-m', 'pip', 'uninstall', '-y', '-q', project.ext.app_name,
           '--break-system-packages'
         ]
         println "Uninstall $project.name : $moduleDir -> $module.path"
@@ -285,7 +285,7 @@ task check(type: Task) {
         exec {
           workingDir = dirName(file)
           environment PYTHONPATH: pythonPath
-          commandLine rootProject.python, '-m', 'unittest', '-b', '-f', '-v' ,file.path
+          commandLine project.python, '-m', 'unittest', '-b', '-f', '-v' ,file.path
         }
       }
   }
@@ -303,7 +303,7 @@ task pylint(type: Task) {
     println "[$project.name] Execute pylint \n\t from: ${srcDir}"
     exec {
       workingDir project.rootDir
-      commandLine rootProject.python, '-m', 'pylint', "--rcfile=${pylintCfg}",
+      commandLine project.python, '-m', 'pylint', "--rcfile=${pylintCfg}",
         "--disable=${disabledChecks}", "${srcDir}", "--fail-under=${project.ext.failScore}"
     }
   }
@@ -318,7 +318,7 @@ task mypy(type: Task) {
     println "[$project.name] Execute mypy \n\t from: ${srcDir}"
     exec {
       workingDir project.rootDir
-      commandLine rootProject.python, '-m', 'mypy', srcDir
+      commandLine project.python, '-m', 'mypy', srcDir
     }
   }
 }

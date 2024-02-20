@@ -56,7 +56,7 @@ task findContainers(type: Task) {
   group = 'Docker'
   description = 'Find all available docker-compose.yml files from docker directory'
   doLast {
-    def dockerDir = "${rootProject.projectDir}/docker/composes"
+    def dockerDir = "${project.projectDir}/docker/composes"
     def dockerFiles = filesByPattern("${dockerDir}", /.*docker-compose\.ya?ml$/)
     dockerFiles.each { File file ->
       project.ext.containers << file.getParentFile().getName()

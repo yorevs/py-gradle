@@ -26,7 +26,7 @@ task patchVersion(type: Task) {
   doLast {
     println "Patching the build number"
     exec {
-      commandLine rootProject.python, '-m', 'bumpver', 'update', '--patch'
+      commandLine project.python, '-m', 'bumpver', 'update', '--patch'
     }
   }
 }
@@ -40,7 +40,7 @@ task updateMinor(type: Task) {
   doLast {
     println "Updating the minor number"
     exec {
-      commandLine rootProject.python, '-m', 'bumpver', 'update', '--minor'
+      commandLine project.python, '-m', 'bumpver', 'update', '--minor'
     }
   }
 }
@@ -54,7 +54,7 @@ task updateMajor(type: Task) {
   doLast {
     println "Updating the major number"
     exec {
-      commandLine rootProject.python, '-m', 'bumpver', 'update', '--major'
+      commandLine project.python, '-m', 'bumpver', 'update', '--major'
     }
   }
 }

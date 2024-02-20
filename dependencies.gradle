@@ -7,8 +7,8 @@
 */
 
 /* Project file definitions */
-rootProject.ext.depsFile = "$project.projectDir/dependencies.hspd"
-rootProject.ext.reqsFile = "$project.projectDir/src/main/requirements.txt"
+project.ext.depsFile = "$project.projectDir/dependencies.hspd"
+project.ext.reqsFile = "$project.projectDir/src/main/requirements.txt"
 
 /* Version compatibility mode map */
 def modesMap = [
@@ -26,7 +26,7 @@ String detectSpace() {
 
   def output = new ByteArrayOutputStream()
   exec {
-    commandLine 'sh', '-c', "${rootProject.ext.python} -c \"from sys import prefix, base_prefix; print(prefix != base_prefix);\""
+    commandLine 'sh', '-c', "${project.ext.python} -c \"from sys import prefix, base_prefix; print(prefix != base_prefix);\""
     standardOutput = output
   }
   def is_venv = Boolean.parseBoolean(output.toString())
@@ -115,8 +115,8 @@ task installDependencies(type: Task) {
   description = 'Install all required python packages'
   dependsOn syncRequirements
   doLast {
-    def req_file = new File("${rootProject.ext.sourceRoot}/main/requirements.txt")
-    println "\nInstalling \"${project.name}\" dependencies using ${rootProject.python}"
+    def req_file = new File("${project.ext.sourceRoot}/main/requirements.txt")
+    println "\nInstalling \"${project.name}\" dependencies using ${project.python}"
     println "Requirements file: \n\t" + req_file
     println "Required Packages:"
     req_file.each { dep ->
@@ -124,10 +124,10 @@ task installDependencies(type: Task) {
         println "  |-" + dep
       }
     }
-    println "Space: ${rootProject.space}"
+    println "Space: ${project.space}"
     def args = [
-      rootProject.python, '-m', 'pip', 'install', '-q',
-      rootProject.space, '--upgrade', '-r', req_file.toString(),
+      project.python, '-m', 'pip', 'install', '-q',
+      project.space, '--upgrade', '-r', req_file.toString(),
       '--break-system-packages'
     ]
     exec {
@@ -144,7 +144,7 @@ task freezeDependencies(type: Task) {
     readDependencies()
     def output = new ByteArrayOutputStream()
     exec {
-      commandLine rootProject.python, '-m', 'pip', 'freeze', '--all'
+      commandLine project.python, '-m', 'pip', 'freeze', '--all'
       standardOutput = output
     }
     def pipDeps = [:]

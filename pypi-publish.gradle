@@ -55,7 +55,7 @@ task checkDist(type: Task) {
         println "Checking distribution files -> $distDir"
         exec {
           workingDir moduleDir
-          commandLine rootProject.python, '-m', 'twine', 'check', "${distDir}/*"
+          commandLine project.python, '-m', 'twine', 'check', "${distDir}/*"
         }
     }
   }
@@ -79,11 +79,11 @@ task sdist(type: Task) {
           println "Generating distribution files -> $moduleDir"
           exec {
             workingDir "$moduleDir"
-            commandLine rootProject.python, "-m", "build", "--sdist"
+            commandLine project.python, "-m", "build", "--sdist"
           }
           exec {
             workingDir "$moduleDir"
-            commandLine rootProject.python, "-m", "build", "--wheel"
+            commandLine project.python, "-m", "build", "--wheel"
           }
         }
   }
@@ -113,7 +113,7 @@ task publish(type: Task) {
         println "Publishing module to PyPi => ${url}"
         exec {
           workingDir moduleDir
-          commandLine rootProject.python, '-m', 'twine', 'upload',
+          commandLine project.python, '-m', 'twine', 'upload',
             '--verbose',
             '--repository-url', "${url}",
             '-u', "${un}",
