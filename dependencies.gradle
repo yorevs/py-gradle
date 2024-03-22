@@ -35,25 +35,25 @@ String detectSpace() {
   return is_venv ? '--global' : '--user'
 }
 
-// Read .hspd files using the defined hspd syntax.
+// Read .hspd files using the defined hspd syntax. Added \[\] as valid package names.
 void readDependencies() {
   def depsFile = new File(depsFile)
   depsFile.eachLine { line ->
     def dep = null
      // All fields syntax
-    if (dep = line =~ /package: ([a-zA-Z0-9-_.]+), version: (latest|[0-9]+(\.[0-9]+){0,4}), mode: (lt|le|eq|compat|ne|gt|ge|none)/) {
+    if (dep = line =~ /package: ([a-zA-Z0-9-_.\[\]]+), version: (latest|[0-9]+(\.[0-9]+){0,4}), mode: (lt|le|eq|compat|ne|gt|ge|none)/) {
       dep.each {
         deps << [package: "${it[1]}", version: "${it[2]}", mode: "${it[4]}"]
       }
     }
     // All except mode syntax
-    else if (dep = line =~ /package: ([a-zA-Z0-9-_.]+), version: (latest|[0-9]+(\.[0-9]+){0,4})/) {
+    else if (dep = line =~ /package: ([a-zA-Z0-9-_.\[\]]+), version: (latest|[0-9]+(\.[0-9]+){0,4})/) {
       dep.each {
         deps << [package: "${it[1]}", version: "${it[2]}", mode: it[2] && it[2] != "latest" ? "compat" : "gt"]
       }
     }
     // Only package syntax
-    else if (dep = line =~ /package: ([a-zA-Z0-9-_.]+)/) {
+    else if (dep = line =~ /package: ([a-zA-Z0-9-_.\[\]]+)/) {
       dep.each {
         deps << [package: "${it[1]}", version: "latest", mode: "gt"]
       }
@@ -126,7 +126,7 @@ task installDependencies(type: Task) {
     }
     println "Space: ${project.space}"
     def args = [
-      project.python, '-m', 'pip', 'install', '-q',
+      project.python, '-m', 'pip', 'install', '-q', '--no-warn-script-location',
       project.space, '--upgrade', '-r', req_file.toString(),
       '--break-system-packages'
     ]
