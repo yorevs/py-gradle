@@ -95,7 +95,7 @@ task cleanPython(type: Task) {
 task compilePython(type: Task) {
   group = 'Build'
   description = 'Compile all python files from sourceRoot'
-  dependsOn installDependencies
+  dependsOn installPackages
   doLast {
     println "Compiling Python files from $project.name \n\t $sourceRoot"
     fileTree("${sourceRoot}").matching {
@@ -114,7 +114,7 @@ task compilePython(type: Task) {
 task compileQrc(type: Task) {
   group = 'Build'
   description = 'Compile all Qt resource files from sourceRoot'
-  dependsOn installDependencies
+  dependsOn installPackages
   doLast {
     fileTree("$sourceRoot").matching {
       include "**/*.qrc"
@@ -195,7 +195,7 @@ task installModule(type: Task) {
   group = 'Install'
   description = "Install module in editable mode (i.e. setuptools 'develop mode')"
   dependsOn syncRequirements
-  dependsOn installDependencies
+  dependsOn installPackages
   doLast {
     fileTree("$sourceRoot").matching {
       include "**/setup.py"
@@ -219,7 +219,7 @@ task install(type: Task) {
   group = 'Install'
   description = "Installs the python module into the system"
   dependsOn syncRequirements
-  dependsOn installDependencies
+  dependsOn installPackages
   doLast {
     fileTree("$sourceRoot").matching {
       include "**/setup.py"

@@ -110,7 +110,7 @@ task syncRequirements(type: Task) {
 }
 
 /* Install all required python packages */
-task installDependencies(type: Task) {
+task installPackages(type: Task) {
   group = 'Dependencies'
   description = 'Install all required python packages'
   dependsOn syncRequirements
@@ -126,7 +126,7 @@ task installDependencies(type: Task) {
     }
     println "Space: ${project.space}"
     def args = [
-      project.python, '-m', 'pip', 'install', '-q', '--no-warn-script-location',
+      project.python, '-m', 'pip', 'install', '--no-warn-script-location',
       project.space, '--upgrade', '-r', req_file.toString(),
       '--break-system-packages'
     ]
@@ -136,8 +136,34 @@ task installDependencies(type: Task) {
   }
 }
 
+/* Uninstall all installed dependencies */
+task removePackages(type: Task) {
+  group = 'Dependencies'
+  description = 'Uninstall all installed dependencies'
+  dependsOn syncRequirements
+  doLast {
+    def req_file = new File("${project.ext.sourceRoot}/main/requirements.txt")
+    println "\nUninstalling \"${project.name}\" dependencies using ${project.python}"
+    println "Requirements file: \n\t" + req_file
+    println "Installed Packages:"
+    req_file.each { dep ->
+      if (dep && ! dep.startsWith("#")) {
+        println "  |-" + dep
+      }
+    }
+    println "Space: ${project.space}"
+    def args = [
+      project.python, '-m', 'pip', 'uninstall', '-y',
+      '-r', req_file.toString(), '--break-system-packages'
+    ]
+    exec {
+      commandLine args.flatten()
+    }
+  }
+}
+
 /* Freeze dependencies to current installed versions. */
-task freezeDependencies(type: Task) {
+task freezeRequirements(type: Task) {
   group = 'Dependencies'
   description = 'Freeze dependencies to current installed versions'
   doLast {
@@ -150,22 +176,29 @@ task freezeDependencies(type: Task) {
     def pipDeps = [:]
     output.toString().split('\n').each { line ->
       def dep = null
-      if (dep = line =~ /([a-zA-Z0-9-_.]+)==([0-9]+(\.[0-9]+){0,3})/) {
+      if (dep = line =~ /([\w.-]+)==(\d+(\.\d+){0,3})/) {
         dep.each {
-          pipDeps["${it[1]}"] = "${it[2]}"
+          pipDeps[it[1]] = it[2]
         }
       }
       // Local dependency
-      else if (dep = line =~ /([a-zA-Z0-9-_.]+) @ (file:\/{2,3}.+)/) {
+      else if (dep = line =~ /([\w.-]+) @ (file:\/{3}.+)/) {
         dep.each {
-          pipDeps["${it[1]}"] = "latest"
+          pipDeps[it[1]] = "latest"
         }
       }
+      else {
+        println("INVALID DEP: ${dep}  LINE: ${line}")
+      }
     }
-    println("\nFreezing [$project.name] Dependencies\n")
+    println("\nFreezing [${project.name}] Dependencies\n")
     deps.each { dep ->
-      def pkgVersion = pipDeps["${dep.package}"]
-      println("package: ${dep.package}, version: ${pkgVersion}, mode: ${dep.mode}")
+      def pkgVersion = pipDeps[dep.package]
+      if (pkgVersion) {
+        println("package: ${dep.package}, version: ${pkgVersion}, mode: ${dep.mode}")
+      } else {
+        println("package: ${dep.package} -> 'Not-Installed' " + pkgVersion)
+      }
     }
   }
 }
