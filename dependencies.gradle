@@ -41,21 +41,21 @@ void readDependencies() {
   depsFile.eachLine { line ->
     def dep = null
      // All fields syntax
-    if (dep = line =~ /package: ([a-zA-Z0-9-_.\[\]]+), version: (latest|[0-9]+(\.[0-9]+){0,4}), mode: (lt|le|eq|compat|ne|gt|ge|none)/) {
+    if (dep = line =~ /package: (([\w.-]+)(\[[\w.-]+\])?), version: (latest|\d+(\.\d+){0,4}), mode: (lt|le|eq|compat|ne|gt|ge|none)/) {
       dep.each {
-        deps << [package: "${it[1]}", version: "${it[2]}", mode: "${it[4]}"]
+        deps << [package: "${it[1]}", version: "${it[4]}", mode: "${it[6]}"]
       }
     }
     // All except mode syntax
-    else if (dep = line =~ /package: ([a-zA-Z0-9-_.\[\]]+), version: (latest|[0-9]+(\.[0-9]+){0,4})/) {
+    else if (dep = line =~ /package: (([\w.-]+)(\[[\w.-]+\])?), version: (latest|\d+(\.\d+){0,4})/) {
       dep.each {
-        deps << [package: "${it[1]}", version: "${it[2]}", mode: it[2] && it[2] != "latest" ? "compat" : "gt"]
+        deps << [package: "${it[1]}", version: "${it[4]}", mode: it[4] && it[4] != "latest" ? "compat" : "ge"]
       }
     }
     // Only package syntax
-    else if (dep = line =~ /package: ([a-zA-Z0-9-_.\[\]]+)/) {
+    else if (dep = line =~ /package: (([\w.-]+)(\[[\w.-]+\])?)/) {
       dep.each {
-        deps << [package: "${it[1]}", version: "latest", mode: "gt"]
+        deps << [package: "${it[1]}", version: "latest", mode: "ge"]
       }
     }
     else {
@@ -97,7 +97,7 @@ task syncRequirements(type: Task) {
   doLast {
     readDependencies()
     def requirements = new File(reqsFile)
-    requirements.setText("###### Requirements file for $project.name ######\n\n")
+    requirements.setText("###### AUTO-GENERATED Requirements file for: ${project.name} ######\n\n")
     deps.each { dep ->
       def mode = modesMap[dep.mode]
       if ('latest' == dep.version) requirements.append("$dep.package\n")
