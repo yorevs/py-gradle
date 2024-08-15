@@ -135,6 +135,12 @@ task publish(type: Task) {
             "${distDir}/*"
         }
     }
+    exec {
+      commandLine 'git', 'tag', '-a', "v${app_version}", '-m', "New PyPi version v${app_version}"
+    }
+    exec {
+      commandLine 'git', 'push', 'origin', "v${app_version}"
+    }
   }
 }
 
