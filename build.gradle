@@ -39,15 +39,15 @@ ext {
   verbose = findProperty('verbose') ?: false
 }
 
-apply from: "${rootDir}/src/main/groovy/dependencies.gradle"
-apply from: "${rootDir}/src/main/groovy/python.gradle"
-apply from: "${rootDir}/src/main/groovy/versioning.gradle"
-apply from: "${rootDir}/src/main/groovy/pypi-publish.gradle"
-apply from: "${rootDir}/src/main/groovy/docker.gradle"
-apply from: "${rootDir}/src/main/groovy/oracle.gradle"
-apply from: "${rootDir}/src/main/groovy/docgen.gradle"
-apply from: "${rootDir}/src/main/groovy/idea.gradle"
-apply from: "${rootDir}/src/main/groovy/devel/poetry.gradle"
+apply from: "${gradleDir}/dependencies.gradle"
+apply from: "${gradleDir}/python.gradle"
+apply from: "${gradleDir}/versioning.gradle"
+apply from: "${gradleDir}/pypi-publish.gradle"
+apply from: "${gradleDir}/docker.gradle"
+apply from: "${gradleDir}/oracle.gradle"
+apply from: "${gradleDir}/docgen.gradle"
+apply from: "${gradleDir}/idea.gradle"
+apply from: "${sourceRoot}/main/groovy/devel/poetry.gradle"
 
 /* Download and extract the gradle project ZIP */
 tasks.register('pyGradleUpdate') {
@@ -59,8 +59,8 @@ tasks.register('pyGradleUpdate') {
     println "Downloading the py-gradle project"
     println "  From: ${url}"
     println "  Into: ${outFile}"
-    delete {
-      delete file("${gradleDir}")
+    delete fileTree(gradleDir).matching {
+      include "**/*.gradle"
     }
     mkdir gradleDir
     exec {
