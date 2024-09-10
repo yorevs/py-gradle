@@ -1,3 +1,4 @@
+package gradle
 /*
     Gradle PyPi publisher extension
 

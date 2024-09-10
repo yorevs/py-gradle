@@ -10,7 +10,6 @@ idea {
     }
     sourceDirs += file('src/main')
     sourceDirs += file('src/demo')
-    testSourceDirs += file('src/test')
     excludeDirs += file('.idea')
     excludeDirs += file('.gradle')
     excludeDirs += file('.vscode')
@@ -47,7 +46,7 @@ apply from: "${gradleDir}/docker.gradle"
 apply from: "${gradleDir}/oracle.gradle"
 apply from: "${gradleDir}/docgen.gradle"
 apply from: "${gradleDir}/idea.gradle"
-apply from: "${sourceRoot}/main/groovy/devel/poetry.gradle"
+apply from: "${gradleDir}/devel/poetry.gradle"
 
 /* Download and extract the gradle project ZIP */
 tasks.register('pyGradleUpdate') {
@@ -71,7 +70,7 @@ tasks.register('pyGradleUpdate') {
       into "${gradleDir}"
     }
     copy {
-      from "${gradleDir}/py-gradle-master/src/main/groovy"
+      from "${gradleDir}/py-gradle-master/src/main/gradle"
       into "${gradleDir}"
       include '**/*.gradle'
     }

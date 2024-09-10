@@ -28,7 +28,7 @@ from __classpath__ import classpath
 
 
 class Main(TUIApplication):
-    """TODO"""
+    """PyGradle Sample Application."""
 
     # The welcome message
     DESCRIPTION: str = classpath.get_source("welcome.txt").read_text(encoding=Charset.UTF_8.val)
