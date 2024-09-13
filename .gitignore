@@ -37,3 +37,4 @@ requirements.txt
 *.dat
 *.bak
 .DS_Store
+.vscode/
