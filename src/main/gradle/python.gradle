@@ -292,19 +292,23 @@ task check(type: Task) {
 /* Execute pylint against sourceRoot */
 task pylint(type: Task) {
   group = 'Verification'
-  description = "Execute pylint against sourceRoot"
+  description = "Run all python unittests from sourceRoot"
+  dependsOn compilePython
+  dependsOn compileQrc
   doLast {
-    def pylintCfg = "${rootDir}/.pylintrc"
-    assert new File(pylintCfg).exists()
-    def srcDir = "${sourceRoot}/main/${project.name}"
-    def disabledChecks = "${pylint_disabled_checks.join(',')}"
-    println "[$project.name] Execute pylint \n\t from: ${srcDir}"
-    exec {
-      workingDir project.rootDir
-      commandLine project.python, '-m', 'pylint', "--rcfile=${pylintCfg}",
-        "--disable=${disabledChecks}", "${srcDir}", "--fail-under=${project.ext.failScore}"
-    }
-  }
+    println "Executing all unittests from ${sourceRoot}"
+    if (verbose) {
+        println ""
+        println "  PYTHONPATH: "
+        println "\t|- ${project.ext.pythonPath.split(':').join('\n\t|- ')}"
+        println "Executing unittests from -> ${file.name}"
+        println ""
+      }
+      exec {
+        workingDir = dirName(file)
+        environment PYTHONPATH: pythonPath
+        commandLine project.python, '-m', 'unittest', '-b', '-f', '-v' , '.'
+      }
 }
 
 /* Execute mypy against sourceRoot */
