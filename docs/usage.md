@@ -51,6 +51,9 @@ application:
 python:
   version: 3.11.14
   executable: .venv/bin/python
+
+pip:
+  extraIndexUrl: https://your.private.index/simple
 ```
 
 ### Validation

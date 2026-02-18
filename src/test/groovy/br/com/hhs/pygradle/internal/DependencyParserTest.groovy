@@ -57,4 +57,36 @@ binary: jq
     assert extension.apps[0] == [binary: 'curl', version: '8.0.1']
     assert extension.apps[1] == [binary: 'jq', version: 'latest']
   }
+
+  /**
+   * Verify pip help detection of --break-system-packages.
+   */
+  @Test
+  void shouldDetectBreakSystemPackagesFlag() {
+    def helpText = '  --break-system-packages  Allow pip to modify system packages'
+    assert PyGradleUtils.supportsBreakSystemPackages(helpText)
+  }
+
+  /**
+   * Verify pip help detection when --break-system-packages is absent.
+   */
+  @Test
+  void shouldHandleMissingBreakSystemPackagesFlag() {
+    def helpText = 'Options:\n  --user  Install to the Python user install directory.'
+    assert !PyGradleUtils.supportsBreakSystemPackages(helpText)
+  }
+
+  /**
+   * Verify venv directory detection from python executable.
+   */
+  @Test
+  void shouldDetectVenvDir() {
+    def unixExec = '/tmp/project/.venv/bin/python'
+    def winExec = 'C:\\project\\.venv\\Scripts\\python.exe'
+    def unixVenv = PyGradleUtils.detectVenvDir(unixExec)
+    def winVenv = PyGradleUtils.detectVenvDir(winExec)
+
+    assert unixVenv.path.replace('\\', '/') == '/tmp/project/.venv'
+    assert winVenv.path.replace('\\', '/') == 'C:/project/.venv'
+  }
 }

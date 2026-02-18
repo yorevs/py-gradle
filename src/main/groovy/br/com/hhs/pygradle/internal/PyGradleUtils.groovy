@@ -73,7 +73,7 @@ class PyGradleUtils {
     }
     def isVenv = Boolean.parseBoolean(output.toString().trim())
     project.logger.lifecycle("> Build is${isVenv ? ' ' : ' NOT '}running under a virtual environment (venv).")
-    return isVenv ? '--global' : '--user'
+    return isVenv ? '' : '--user'
   }
 
   /**
@@ -110,6 +110,37 @@ class PyGradleUtils {
       }
     }
     return files
+  }
+
+  /**
+   * Check if pip help text supports the --break-system-packages flag.
+   *
+   * @param helpText pip --help output.
+   * @return True when the flag is supported.
+   */
+  static boolean supportsBreakSystemPackages(String helpText) {
+    helpText?.contains('--break-system-packages')
+  }
+
+  /**
+   * Detect the venv directory from a python executable path.
+   *
+   * @param pythonExec Python executable path.
+   * @return Venv directory or null when not detected.
+   */
+  static File detectVenvDir(String pythonExec) {
+    if (pythonExec == null || pythonExec.trim().isEmpty()) {
+      return null
+    }
+    def normalized = pythonExec.replace('\\', '/')
+    def normalizedLower = normalized.toLowerCase()
+    if (normalizedLower.endsWith('/bin/python') || normalizedLower.endsWith('/bin/python3')) {
+      return new File(normalized).getParentFile().getParentFile()
+    }
+    if (normalizedLower.endsWith('/scripts/python.exe')) {
+      return new File(normalized).getParentFile().getParentFile()
+    }
+    null
   }
 
   /**

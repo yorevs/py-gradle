@@ -67,6 +67,9 @@ class PyGradleExtension {
   /** PyPI module base URL. */
   String pypiModuleUrl
 
+  /** Pip extra index URL (private index). */
+  String pipExtraIndexUrl
+
   /** API docs output directory. */
   String apiDocsDir
 
@@ -144,6 +147,7 @@ class PyGradleExtension {
     this.deps = []
     this.apps = []
     this.pypiModuleUrl = configValue(config, project, 'pypiModuleUrl') ?: 'https://pypi.org/pypi'
+    this.pipExtraIndexUrl = configValue(config, project, 'pip.extraIndexUrl')
     this.apiDocsDir = "${project.rootDir}/docs/api"
     this.projTomlFile = project.file(configValue(config, project, 'projTomlFile') ?: "${project.projectDir}/pyproject.toml")
     this.setupFile = project.file(configValue(config, project, 'setupFile') ?: "${project.projectDir}/src/main/setup.py")

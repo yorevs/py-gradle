@@ -25,6 +25,7 @@ class SyncRequirementsTask extends PyGradleBaseTask {
     def extension = getExtension()
     PyGradleUtils.readDependencies(extension)
     def requirements = extension.reqsFile
+    requirements.parentFile.mkdirs()
     requirements.setText("###### AUTO-GENERATED Requirements file for: ${project.name} ######\n\n")
     extension.deps.each { dep ->
       def mode = PyGradleUtils.MODES_MAP[dep.mode]

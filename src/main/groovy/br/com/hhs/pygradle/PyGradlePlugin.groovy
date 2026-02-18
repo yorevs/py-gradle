@@ -92,6 +92,7 @@ class PyGradlePlugin implements Plugin<Project> {
     project.ext.set('app_name', extension.appName)
     project.ext.set('app_version', extension.appVersion)
     project.ext.set('pypiModuleUrl', extension.pypiModuleUrl)
+    project.ext.set('pipExtraIndexUrl', extension.pipExtraIndexUrl)
     project.ext.set('apiDocsDir', extension.apiDocsDir)
     project.ext.set('projTomlFile', extension.projTomlFile.toString())
     project.ext.set('setupFile', extension.setupFile.toString())

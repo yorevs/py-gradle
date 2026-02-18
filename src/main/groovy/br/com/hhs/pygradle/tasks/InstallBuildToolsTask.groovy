@@ -27,18 +27,24 @@ class InstallBuildToolsTask extends PyGradleBaseTask {
     buildTools.each { tool ->
       println("  |-${tool.trim()}")
     }
-    println('Space: --global')
+    println("Space: ${extension.space ?: 'venv default'}")
+    upgradePip(extension.python)
+    def breakSystemPackages = pipSupportsBreakSystemPackages(extension.python)
     def args = [
       extension.python, '-m', 'pip', 'install', '-q',
-      extension.space, '--upgrade', '-r', extension.buildToolsFile,
-      '--no-warn-script-location', '--break-system-packages'
+      '--upgrade', '-r', extension.buildToolsFile,
+      '--no-warn-script-location'
     ]
+    if (extension.space) {
+      args << extension.space
+    }
+    if (breakSystemPackages) {
+      args << '--break-system-packages'
+    }
     if (isDryRun()) {
       println("DRY-RUN: ${args.flatten().join(' ')}")
       return
     }
-    project.exec {
-      commandLine args.flatten()
-    }
+    execWithVenvIfAvailable(args.flatten(), extension.python)
   }
 }

@@ -27,6 +27,7 @@ class CheckTask extends PyGradleBaseTask {
     project.fileTree("${extension.sourceRoot}/test").matching {
       include '**/test_*.py'
     }.each { File file ->
+      def pythonExec = project.file(extension.python).path
       if (extension.verbose) {
         println('')
         println('  PYTHONPATH: ')
@@ -34,10 +35,15 @@ class CheckTask extends PyGradleBaseTask {
         println("Executing unittests from -> ${file.name}")
         println('')
       }
+      def args = [pythonExec, '-m', 'unittest', '-b', '-f', '-v', file.path]
+      if (isDryRun()) {
+        println("DRY-RUN: ${args.join(' ')}")
+        return
+      }
       project.exec {
         workingDir = PyGradleUtils.dirName(file)
         environment PYTHONPATH: extension.pythonPath
-        commandLine extension.python, '-m', 'unittest', '-b', '-f', '-v', file.path
+        commandLine args
       }
     }
   }

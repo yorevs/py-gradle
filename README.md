@@ -85,6 +85,9 @@ application:
 python:
   version: 3.11.14
   executable: .venv/bin/python
+
+pip:
+  extraIndexUrl: https://your.private.index/simple
 ```
 
 Gradle properties that are used as defaults when present:
