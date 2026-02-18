@@ -156,6 +156,9 @@ Below is a high-level task catalog grouped by purpose. Use `./gradlew tasks --al
 - `cleanDist`: remove distribution artifacts
 - `buildOnly`, `build`, `clean`, `compile`
 
+### Application
+- `run`: run the configured Python entrypoint (uses venv when configured)
+
 ### Dependencies
 - `listDependencies`: list parsed dependencies
 - `syncRequirements`: generate `requirements.txt`
@@ -163,6 +166,22 @@ Below is a high-level task catalog grouped by purpose. Use `./gradlew tasks --al
 - `removePackages`: uninstall requirements
 - `freezeRequirements`: show installed versions
 - `installBinaries`: install required system apps (brew/apt/yum; uses `sudo` for apt/yum)
+
+`dependencies.hspd` supports entries like:
+
+```text
+package: <pkg_name>, version: <latest|versionNum>, mode: <lt|le|eq|compat|ne|gt|ge|none>
+binary: <app_name>, version: <latest|versionNum>
+```
+
+You can also include raw `requirements.txt` lines (they are copied as-is), for example:
+
+```text
+--index-url https://pypi.org/simple
+-r extra-requirements.txt
+git+https://github.com/user/repo.git@main#egg=demo
+requests[socks]>=2.31.0; python_version < "3.12"
+```
 
 ### Verification
 - `check`: run Python unittests

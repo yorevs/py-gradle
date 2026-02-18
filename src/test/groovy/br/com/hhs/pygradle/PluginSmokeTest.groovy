@@ -119,6 +119,7 @@ plugins {
     assert result.output.contains('autoDocApi')
     assert result.output.contains('Idea tasks')
     assert result.output.contains('exportRunConfigurations')
+    assert result.output.contains('run')
   }
 
   /**

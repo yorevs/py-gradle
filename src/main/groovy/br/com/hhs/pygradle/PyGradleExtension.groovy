@@ -64,6 +64,9 @@ class PyGradleExtension {
   /** Parsed system applications list. */
   List<Map<String, String>> apps
 
+  /** Raw requirements lines (ordered). */
+  List<String> requirementLines
+
   /** PyPI module base URL. */
   String pypiModuleUrl
 
@@ -146,6 +149,7 @@ class PyGradleExtension {
     ]
     this.deps = []
     this.apps = []
+    this.requirementLines = []
     this.pypiModuleUrl = configValue(config, project, 'pypiModuleUrl') ?: 'https://pypi.org/pypi'
     this.pipExtraIndexUrl = configValue(config, project, 'pip.extraIndexUrl')
     this.apiDocsDir = "${project.rootDir}/docs/api"

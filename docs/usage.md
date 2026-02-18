@@ -103,6 +103,9 @@ to print the commands without executing them.
 - `installModule`: editable install (pip -e).
 - `uninstall`: remove the project from the environment.
 
+### Application
+- `run`: run the configured Python entrypoint (uses venv when configured).
+
 ### Verification
 - `check`: run Python unittests under `src/test`.
 - `pylint`: run pylint against `src/main/<project.name>`.
@@ -137,6 +140,15 @@ to print the commands without executing them.
 ```text
 package: <pkg_name>, version: <latest|versionNum>, mode: <lt|le|eq|compat|ne|gt|ge|none>
 binary: <app_name>, version: <latest|versionNum>
+```
+
+You can also include raw `requirements.txt` lines (copied as-is), for example:
+
+```text
+--index-url https://pypi.org/simple
+-r extra-requirements.txt
+git+https://github.com/user/repo.git@main#egg=demo
+requests[socks]>=2.31.0; python_version < "3.12"
 ```
 
 ## Notes

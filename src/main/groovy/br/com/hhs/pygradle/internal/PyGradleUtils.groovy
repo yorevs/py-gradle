@@ -171,19 +171,34 @@ class PyGradleUtils {
    */
   static void readDependencies(PyGradleExtension extension) {
     def depsFile = extension.depsFile
+    extension.deps = []
+    extension.apps = []
+    extension.requirementLines = []
     depsFile.eachLine { line ->
+      def trimmed = line?.trim()
+      if (!trimmed ||
+          trimmed.startsWith('#') ||
+          trimmed.startsWith('/*') ||
+          trimmed.startsWith('*') ||
+          trimmed.startsWith('*/')) {
+        return
+      }
       def dep = null
       if ((dep = line =~ /package: (([\w.-]+)(\[[\w.-]+\])?), version: (latest|\d+(\.\w+){0,5}), mode: (lt|le|eq|compat|ne|gt|ge|none)/)) {
         dep.each {
           extension.deps << [package: "${it[1]}", version: "${it[4]}", mode: "${it[6]}"]
+          extension.requirementLines << buildRequirementLine(it[1], it[4], it[6])
         }
       } else if ((dep = line =~ /package: (([\w.-]+)(\[[\w.-]+\])?), version: (latest|\d+(\.\w+){0,5})/)) {
         dep.each {
-          extension.deps << [package: "${it[1]}", version: "${it[4]}", mode: it[4] && it[4] != 'latest' ? 'compat' : 'ge']
+          def mode = it[4] && it[4] != 'latest' ? 'compat' : 'ge'
+          extension.deps << [package: "${it[1]}", version: "${it[4]}", mode: mode]
+          extension.requirementLines << buildRequirementLine(it[1], it[4], mode)
         }
       } else if ((dep = line =~ /package: (([\w.-]+)(\[[\w.-]+\])?)/)) {
         dep.each {
           extension.deps << [package: "${it[1]}", version: 'latest', mode: 'ge']
+          extension.requirementLines << buildRequirementLine(it[1], 'latest', 'ge')
         }
       } else if ((dep = line =~ /binary: (([\w.-]+)(\[[\w.-]+\])?), version: (latest|\d+(\.\w+){0,5})/)) {
         dep.each {
@@ -194,12 +209,44 @@ class PyGradleUtils {
           extension.apps << [binary: "${it[1]}", version: 'latest']
         }
       } else {
-        if (line.startsWith('package: ')) {
+        if (trimmed.startsWith('package: ')) {
           throw new GradleException("Invalid hspd syntax ${line}. Usage: " +
             'package: <pkg_name>, version: [<latest>|versionNum], ' +
             '[mode: <lt|le|eq|compat|ne|gt|ge|none>]')
         }
+        extension.requirementLines << trimmed
       }
+    }
+  }
+
+  /**
+   * Build a requirements.txt line from a parsed dependency.
+   *
+   * @param packageName Package name.
+   * @param version Version or "latest".
+   * @param mode Comparator mode.
+   * @return Requirements line.
+   */
+  static String buildRequirementLine(String packageName, String version, String mode) {
+    if ('latest' == version) {
+      return packageName
+    }
+    def comparator = MODES_MAP[mode]
+    comparator ? "${packageName}${comparator}${version}" : packageName
+  }
+
+  /**
+   * Write the requirements file using parsed requirement lines.
+   *
+   * @param extension PyGradle extension.
+   * @param projectName Project name.
+   */
+  static void writeRequirementsFile(PyGradleExtension extension, String projectName) {
+    def requirements = extension.reqsFile
+    requirements.parentFile.mkdirs()
+    requirements.setText("###### AUTO-GENERATED Requirements file for: ${projectName} ######\n\n")
+    extension.requirementLines.each { line ->
+      requirements.append("${line}\n")
     }
   }
 }

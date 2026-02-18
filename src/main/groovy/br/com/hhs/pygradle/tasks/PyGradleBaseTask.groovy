@@ -35,10 +35,22 @@ abstract class PyGradleBaseTask extends DefaultTask {
    * @param args Command args.
    * @param pythonExec Python executable used to detect venv.
    */
-  protected void execWithVenvIfAvailable(List<String> args, String pythonExec) {
+  protected void execWithVenvIfAvailable(
+      List<String> args,
+      String pythonExec,
+      Map<String, Object> env = [:],
+      String workingDir = null
+  ) {
     def venvDir = PyGradleUtils.detectVenvDir(pythonExec)
+    def workDir = workingDir
     if (venvDir == null) {
       project.exec {
+        if (workDir) {
+          workingDir = workDir
+        }
+        if (env) {
+          environment env
+        }
         commandLine args
       }
       return
@@ -48,7 +60,8 @@ abstract class PyGradleBaseTask extends DefaultTask {
     def isWindows = os?.contains('win')
     if (isWindows) {
       def activate = new File(venvDir, 'Scripts/activate.bat').path
-      def command = "call \"${activate}\" && ${args.join(' ')} && deactivate"
+      def envCmd = env ? env.collect { key, value -> "set ${key}=${value}" }.join(' && ') + ' && ' : ''
+      def command = "call \"${activate}\" && ${envCmd}${args.join(' ')} && deactivate"
       if (isDryRun()) {
         println("DRY-RUN: ${command}")
         return
@@ -59,12 +72,16 @@ abstract class PyGradleBaseTask extends DefaultTask {
       return
     }
     def activate = new File(venvDir, 'bin/activate').path
-    def command = "set -e; source \"${activate}\"; ${args.join(' ')}; deactivate"
+    def envCmd = env ? env.collect { key, value -> "export ${key}=\"${value}\"" }.join('; ') + '; ' : ''
+    def command = "set -e; source \"${activate}\"; trap 'deactivate' EXIT; ${envCmd}${args.join(' ')}"
     if (isDryRun()) {
       println("DRY-RUN: ${command}")
       return
     }
     project.exec {
+      if (workDir) {
+        workingDir = workDir
+      }
       commandLine 'bash', '-c', command
     }
   }

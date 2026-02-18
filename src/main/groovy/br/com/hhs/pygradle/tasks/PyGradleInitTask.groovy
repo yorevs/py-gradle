@@ -146,6 +146,10 @@ app_version   = ${version}
     package: requests, version: latest
     package: numpy, version: 1.26.4, mode: ge
     binary: git, version: latest
+    # You can also include raw requirements.txt lines:
+    git+https://github.com/user/repo.git@main#egg=demo
+    --index-url https://pypi.org/simple
+    -r extra-requirements.txt
 */
 """
   }

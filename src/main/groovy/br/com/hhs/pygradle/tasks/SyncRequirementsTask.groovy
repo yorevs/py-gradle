@@ -24,21 +24,7 @@ class SyncRequirementsTask extends PyGradleBaseTask {
   void syncRequirements() {
     def extension = getExtension()
     PyGradleUtils.readDependencies(extension)
-    def requirements = extension.reqsFile
-    requirements.parentFile.mkdirs()
-    requirements.setText("###### AUTO-GENERATED Requirements file for: ${project.name} ######\n\n")
-    extension.deps.each { dep ->
-      def mode = PyGradleUtils.MODES_MAP[dep.mode]
-      if ('latest' == dep.version) {
-        requirements.append("${dep.package}\n")
-      } else {
-        if (mode != null) {
-          requirements.append("${dep.package}${mode}${dep.version}\n")
-        } else {
-          requirements.append("${dep.package}\n")
-        }
-      }
-    }
+    PyGradleUtils.writeRequirementsFile(extension, project.name)
   }
 
   /**

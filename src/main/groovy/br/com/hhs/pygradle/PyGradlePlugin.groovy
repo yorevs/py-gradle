@@ -35,6 +35,7 @@ import br.com.hhs.pygradle.tasks.PypiShowTask
 import br.com.hhs.pygradle.tasks.PublishTask
 import br.com.hhs.pygradle.tasks.ReformatCodeTask
 import br.com.hhs.pygradle.tasks.RemovePackagesTask
+import br.com.hhs.pygradle.tasks.RunTask
 import br.com.hhs.pygradle.tasks.SdistTask
 import br.com.hhs.pygradle.tasks.StartAllContainersTask
 import br.com.hhs.pygradle.tasks.SyncBuildSystemRequirementsTask
@@ -121,6 +122,7 @@ class PyGradlePlugin implements Plugin<Project> {
     project.tasks.register('installModule', InstallModuleTask)
     project.tasks.register('install', InstallTask)
     project.tasks.register('uninstall', UninstallTask)
+    project.tasks.register('run', RunTask)
     project.tasks.register('check', CheckTask)
     project.tasks.register('pylint', PylintTask)
     project.tasks.register('mypy', MypyTask)

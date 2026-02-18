@@ -38,6 +38,8 @@ class DependencyParserTest {
 package: hspylib, version: 1.2.3, mode: ge
 package: hspylib-clitt, version: 2.3.4
 package: simplepkg
+--index-url https://pypi.org/simple
+git+https://github.com/user/repo.git@main#egg=demo
 binary: curl, version: 8.0.1
 binary: jq
 '''.trim()
@@ -56,6 +58,8 @@ binary: jq
     assert extension.apps.size() == 2
     assert extension.apps[0] == [binary: 'curl', version: '8.0.1']
     assert extension.apps[1] == [binary: 'jq', version: 'latest']
+    assert extension.requirementLines.contains('--index-url https://pypi.org/simple')
+    assert extension.requirementLines.contains('git+https://github.com/user/repo.git@main#egg=demo')
   }
 
   /**

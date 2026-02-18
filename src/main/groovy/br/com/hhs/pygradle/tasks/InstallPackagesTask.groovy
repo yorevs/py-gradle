@@ -26,20 +26,7 @@ class InstallPackagesTask extends PyGradleBaseTask {
     if (!reqFile.exists()) {
       println("Requirements file missing. Regenerating from ${extension.depsFile}.")
       PyGradleUtils.readDependencies(extension)
-      reqFile.parentFile.mkdirs()
-      reqFile.setText("###### AUTO-GENERATED Requirements file for: ${project.name} ######\n\n")
-      extension.deps.each { dep ->
-        def mode = PyGradleUtils.MODES_MAP[dep.mode]
-        if ('latest' == dep.version) {
-          reqFile.append("${dep.package}\n")
-        } else {
-          if (mode != null) {
-            reqFile.append("${dep.package}${mode}${dep.version}\n")
-          } else {
-            reqFile.append("${dep.package}\n")
-          }
-        }
-      }
+      PyGradleUtils.writeRequirementsFile(extension, project.name)
     }
     print("\nInstalling \"${project.name}\" dependencies using: ${extension.python} => ")
     project.exec {
