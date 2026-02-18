@@ -1,47 +1,56 @@
 plugins {
-  id 'idea'
-  id "org.jetbrains.gradle.plugin.idea-ext" version "1.1.8"
+  id 'com.gradle.plugin-publish' version '2.0.0'
+  id 'groovy'
 }
 
-idea {
-  module {
-    settings {
-      rootModuleType = 'PYTHON_MODULE'
-    }
-    sourceDirs += file('src/main')
-    testSourceDirs += file('src/test')
-    excludeDirs += file('.idea')
-    excludeDirs += file('.gradle')
-    excludeDirs += file('.vscode')
-    excludeDirs += file('.gradle')
-    excludeDirs += file('.run')
-    excludeDirs += file('run-configs')
-    excludeDirs += file('src/main/build')
-    excludeDirs += file('src/main/dist')
-    excludeDirs += file('src/main/PyGradle.egg-info')
+group = 'br.com.hhs'
+version = findProperty('app_version') ?: '0.1.0'
+
+description = 'Gradle plugin for Python applications.'
+
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(21)
   }
 }
 
-configurations {
-    src
+repositories {
+  mavenCentral()
 }
 
-ext {
-  sourceRoot = "${rootDir}/src"
-  application = "${sourceRoot}/main/python/__main__.py"
-  pythonPath = "${sourceRoot}/main/python/:${sourceRoot}/test/python/:${sourceRoot}/demo/python/"
-  buildToolsFile = file("${project.projectDir}/buildTools.txt")
-  startTime = System.currentTimeMillis()
-  verbose = findProperty('verbose') ?: false
+dependencies {
+  implementation gradleApi()
+  implementation localGroovy()
+  testImplementation gradleTestKit()
+  testImplementation 'junit:junit:4.13.2'
 }
 
-apply from: "${sourceRoot}/main/gradle/dependencies.gradle"
-apply from: "${sourceRoot}/main/gradle/python.gradle"
-apply from: "${sourceRoot}/main/gradle/versioning.gradle"
-apply from: "${sourceRoot}/main/gradle/pypi-publish.gradle"
-apply from: "${sourceRoot}/main/gradle/docker.gradle"
-apply from: "${sourceRoot}/main/gradle/oracle.gradle"
-apply from: "${sourceRoot}/main/gradle/docgen.gradle"
-apply from: "${sourceRoot}/main/gradle/idea.gradle"
-apply from: "${sourceRoot}/main/gradle/devel/poetry.gradle"
+tasks.register('ciTest') { task ->
+  task.group = 'Verification'
+  task.description = 'Run plugin tests for CI.'
+  task.dependsOn 'validatePlugins'
+  task.dependsOn 'test'
+}
 
+gradlePlugin {
+  website = findProperty('siteUrl') ?: 'https://github.com/yorevs/py-gradle'
+  vcsUrl = findProperty('siteUrl') ?: 'https://github.com/yorevs/py-gradle'
+  plugins {
+    pyGradle {
+      id = 'br.com.hhs.pygradle'
+      implementationClass = 'br.com.hhs.pygradle.PyGradlePlugin'
+      displayName = 'PyGradle'
+      description = 'Gradle plugin for Python applications.'
+      tags.set(['python', 'build', 'automation'])
+    }
+  }
+}
+
+def publishKey = System.getenv('GRADLE_PUBLISH_KEY')
+def publishSecret = System.getenv('GRADLE_PUBLISH_SECRET')
+if (!project.hasProperty('gradle.publish.key') && publishKey) {
+  project.ext['gradle.publish.key'] = publishKey
+}
+if (!project.hasProperty('gradle.publish.secret') && publishSecret) {
+  project.ext['gradle.publish.secret'] = publishSecret
+}

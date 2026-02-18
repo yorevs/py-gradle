@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<!-- saved from url=(0046)https://plugins.gradle.org/docs/publish-plugin -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <title>Gradle - How do I publish my plugin?</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="./Gradle - How do I publish my plugin__files/css" type="text/css">
+  <link rel="stylesheet" href="./Gradle - How do I publish my plugin__files/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="./Gradle - How do I publish my plugin__files/main.css">
+  <link rel="shortcut icon" href="https://plugins.gradle.org/shared-assets/shared/images/elephant.ico">
+  <script src="./Gradle - How do I publish my plugin__files/jquery.min.js" integrity="sha384-1H217gwSVyLSIfaLxHbE7dRb3v4mYCKbpQvzx0cegeju1MVsGrX5xXxAvs/HgeFs" crossorigin="anonymous"></script>
+  <script src="./Gradle - How do I publish my plugin__files/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+  
+  <script src="./Gradle - How do I publish my plugin__files/prism.js"></script>
+
+</head>
+<body>
+  <div id="content-wrapper">
+    <header>
+        <nav class="navbar navbar-default">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="https://gradle.org/">
+                        <img src="./Gradle - How do I publish my plugin__files/elephant-corner.png" width="32px" height="32px">
+                    </a>
+                </div>
+
+                <div class="collapse navbar-collapse" id="navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li>
+                          <a href="https://plugins.gradle.org/">Plugins</a>
+                        </li>
+                        <li class="dropdown" id="documentation-dropdown">
+                            <a href="https://plugins.gradle.org/docs/publish-plugin#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Documentation <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li id="submit-documentation-link">
+                                  <a href="https://plugins.gradle.org/docs/publish-plugin">
+                                        Publish a plugin
+                                    </a>
+                                </li>
+                                <li id="reclaiming-documentation-link">
+                                  <a href="https://plugins.gradle.org/docs/reclaiming">
+                                        Link an existing plugin to your account
+                                    </a>
+                                </li>
+                                <li id="deleting-documentation-link">
+                                  <a href="https://plugins.gradle.org/docs/deleting">
+                                        Delete a plugin
+                                    </a>
+                                </li>
+                                <li id="mirroring-documentation-link">
+                                  <a href="https://plugins.gradle.org/docs/mirroring">
+                                        Mirror the plugin portal
+                                    </a>
+                                </li>
+                                <li id="further-help-link">
+                                  <a href="https://plugins.gradle.org/docs/get-help">
+                                    Get further help
+                                  </a>
+                                </li>
+                            </ul>
+                        </li>
+                        
+                          <li id="forums-link">
+                            <a href="https://discuss.gradle.org/" target="_blank">Forums</a>
+                          </li>
+                        
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                    
+                            
+                      <li>
+                          <a id="profile-action" href="https://plugins.gradle.org/u/yorevs">
+                            yorevs
+                          </a>
+                      </li>
+                      <li>
+                        <a id="logout-action" href="https://plugins.gradle.org/user/logout" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Log out">
+                              &nbsp;&nbsp;&nbsp;&nbsp;
+                            <span class="glyphicon glyphicon-log-out" aria-hidden="true">
+                              </span>
+                          </a>
+                      </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    <div id="content">
+      
+<!-- Side navigation -->
+<div class="sidebar">
+  <ul style="list-style-type:none;">
+    <li><a href="https://plugins.gradle.org/docs/publish-plugin#portal-setup">Portal setup</a><br></li>
+    <li><a href="https://plugins.gradle.org/docs/publish-plugin#local-setup">Local setup</a><br></li>
+    <li><a href="https://plugins.gradle.org/docs/publish-plugin#publication">Publication</a><br></li>
+    <ul style="list-style-type:none;">
+      <li><a href="https://plugins.gradle.org/docs/publish-plugin#helpers">Helper plugins</a><br></li>
+      <li><a href="https://plugins.gradle.org/docs/publish-plugin#breaking-changes">Breaking changes</a><br></li>
+      <li><a href="https://plugins.gradle.org/docs/publish-plugin#examples">Examples</a><br></li>
+    </ul>
+    <li><a href="https://plugins.gradle.org/docs/publish-plugin#approval">Approval</a><br></li>
+    <li><a href="https://plugins.gradle.org/docs/publish-plugin#troubleshooting">Troubleshooting</a><br></li>
+    <ul style="list-style-type:none;">
+      <li><a href="https://plugins.gradle.org/docs/publish-plugin#publication-failed">Publication failed</a><br></li>
+      <li><a href="https://plugins.gradle.org/docs/publish-plugin#approval-denied">Approval denied</a><br></li>
+    </ul>
+    <li><a href="https://plugins.gradle.org/docs/publish-plugin#done">You're done!</a><br></li>
+  </ul>
+</div>
+
+<div class="container documentation-page-with-sidebar">
+  <h1>How do I publish my plugin to the Plugin Portal using version 1.0+?</h1>
+    <p><i>
+      <strong>NOTE:</strong> If you are using an older (<i>0.X</i>) version of the plugin, please switch to the
+      <a href="https://plugins.gradle.org/docs/publish-plugin-legacy">older version of this page</a>.
+    </i></p>
+    <p><i>
+      <strong>NOTE:</strong> If you are using version <i>1.0.X</i> of the plugin, please update to at least version <i>1.1.0</i>,
+      which contains critical bug fixes.
+    </i></p>
+    <p><i>
+      <strong>NOTE:</strong> If you have previously published Gradle plugins via Bintray, please read
+      <a href="https://plugins.gradle.org/docs/reclaiming">this information</a>.
+    </i></p>
+    <p><i>
+      <strong>NOTE:</strong> Before publishing a plugin, make sure you agree to the <a href="https://plugins.gradle.org/docs/terms">Terms of Use</a>.
+    </i></p>
+
+  <h2 id="portal-setup">Portal Setup</h2>
+
+  <h4>Create an account.</h4>
+  
+    <p>
+      <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+      Looks like you've already created an account!
+    </p>
+    
+
+  <h4>Create an API key.</h4>
+  <p>
+    
+    Go to your
+    <a href="https://plugins.gradle.org/u/yorevs?tab=publishing">
+    profile page
+    </a> to retrieve get your API key via the “API Keys” tab.
+    
+  </p>
+
+
+  <p>You can use the same API key to publish as many plugins as you like.</p>
+
+  <h2 id="local-setup">Local Setup</h2>
+
+  <p>
+    Once you've created an API key, the “API Keys” tab of
+    
+    <a href="https://plugins.gradle.org/u/yorevs?tab=publishing">
+    your profile page
+    </a>
+    
+    will provide a snippet that you can copy &amp; paste into your Gradle user properties file.
+  </p>
+
+  <p>
+    The default location for the Gradle user properties file is
+    <code>$USER_HOME/.gradle/gradle.properties</code>,
+    where <code>$USER_HOME</code> refers to your user home directory.
+  </p>
+
+  <p><i>
+    <strong>NOTE:</strong> There is also an experimental task, “login“, that is part of the plugin publishing plugin, which automates this step.
+  </i></p>
+
+  <p>
+    Alternatively, you can provide the API key via <code>GRADLE_PUBLISH_KEY</code> and <code>GRADLE_PUBLISH_SECRET</code> environment variables.
+  </p>
+  <p>
+    This approach might be useful for CI/CD pipelines.
+  </p>
+
+  <h2 id="publication">Publication</h2>
+
+  <p>
+    The <a href="https://plugins.gradle.org/plugin/com.gradle.plugin-publish">Plugin Publishing plugin</a> provides tasks that upload your plugin to the Plugin Portal.
+    It can also be used to publish updated versions of your plugin.
+    This plugin is not part of the Gradle distribution but is itself hosted on the Plugin Portal.
+  </p>
+  <p>
+    Once configured, your plugin can be published by simply running the <code>publishPlugins</code> task of your plugin's build.
+    Detailed instructions can be found in the <a href="https://docs.gradle.org/current/userguide/publishing_gradle_plugins.html">Gradle docs for plugin publishing</a>.
+    Take care to select the version matching the actual Gradle version you are using, but not older than v7.6 (that is
+    the version when the manual starts focusing on more modern versions of the plugin, ie. 1.0 or higher).
+  </p>
+
+  <h3 id="helpers">Helper plugins</h3>
+    <h4 id="plugin-develepment-plugin">Plugin Development plugin</h4>
+      <p>
+        Starting with version 1.0.0, the <a href="https://docs.gradle.org/current/userguide/java_gradle_plugin.html">Plugin Development plugin</a>
+        becomes a mandatory component of the <a href="https://plugins.gradle.org/plugin/com.gradle.plugin-publish">Plugin Publish plugin</a> and is
+        automatically applied with it. Further info on how it interacts with the Maven Publish plugin (also auto-applied
+        by the Plugin Publish plugin) can be found <a href="https://docs.gradle.org/current/userguide/java_gradle_plugin.html#sec:gradle_plugin_dev_interactions">here</a>.
+      </p>
+
+  <h4 id="maven-publish">Maven Publish plugin</h4>
+    <p>
+      Starting with <a href="https://plugins.gradle.org/plugin/com.gradle.plugin-publish">Plugin Publish plugin v1.0.0</a> the only
+      supported way of generating the publication metadata (think Maven GAV coordinates, i.e. group, artifact, version)
+      for Gradle plugins is via the <a href="https://docs.gradle.org/current/userguide/publishing_maven.html">Maven Publish plugin</a>.
+      In fact, the <code>maven-publish</code> plugin is auto-applied when applying <code>plugin-publish</code>.
+    </p>
+    <p>
+      The simultaneous presence of the Maven Publish and Plugin Development plugins, both auto-applied, triggers the
+      configuration of specific Maven publications which will be published to the Plugin Portal. More information on
+      it can be found <a href="https://docs.gradle.org/current/userguide/java_gradle_plugin.html#maven_publish_plugin">here</a>.
+    </p>
+
+  <h4 id="signing">Signing plugin</h4>
+    <p>
+      Starting with version 1.0.0 the <a href="https://plugins.gradle.org/plugin/com.gradle.plugin-publish">Plugin Publish plugin</a> can automatically
+      sign the artifacts it publishes to the Portal. All artifact included in the
+      <a href="https://docs.gradle.org/current/userguide/java_gradle_plugin.html#maven_publish_plugin">main &amp; marker Maven publications</a>
+      will be included, not just jars, POMs &amp; Gradle Module Metadata files.
+      This functionality is turned on by simply applying the <a href="https://docs.gradle.org/current/userguide/signing_plugin.html">Signing plugin</a>.
+    </p>
+
+  <h4 id="shadowing">Shadow plugin</h4>
+    <p>
+      Starting with version 1.0.0 the <a href="https://plugins.gradle.org/plugin/com.gradle.plugin-publish">Plugin Publish plugin</a> can automatically
+      interact with the <a href="https://github.com/GradleUp/shadow">com.gradleup.shadow plugin</a>, if applied.
+      It will automatically publish the jar produced by the <code>shadowJar</code> task, as the main artifact. Note that this interaction
+      requires the usage of Gradle v6.0.1 or later, in order to work properly.
+    </p>
+
+  <h3 id="breaking-changes">Breaking changes</h3>
+  <p>
+    Starting from version 1.0.0, the <a href="https://plugins.gradle.org/plugin/com.gradle.plugin-publish">Plugin Publish plugin</a> is only compatible
+    with Gradle 4.10.3 or later (due to relying on <a href="https://plugins.gradle.org/docs/publish-plugin#maven-publish">maven publication</a>).
+  </p>
+
+  <p>
+    Making the Maven Publish plugin mandatory triggers the following API changes:
+    </p><ul>
+      <li>The <code>mavenCoordinates</code> block is no longer defined and can’t be used to override publication GAV coordinates. The coordinates are always based on the Maven publication’s GAV (which defaults to the <code>Project</code>’s group, name &amp; version).</li>
+      <li>The <code>withDependencies</code> block is no longer defined; all dependencies come from the Java component and how we define dependencies for Java libraries.</li>
+    </ul>
+  <p></p>
+
+  <h3 id="examples">Examples</h3>
+  <p>
+    <a href="https://plugins.gradle.org/plugin/com.gradle.plugin-publish">Plugin Publish plugin v1.0.0</a> simplifies the configuration of
+    plugin publishing by merging the <code>pluginBundle</code> block into the <code>gradlePlugin</code> one.
+  </p>
+  <p>
+    These simplifications however require backing support in the Gradle API, so are only available when using the
+    Plugin Publish Plugin with Gradle v7.6 or later.
+  </p>
+
+  <div class="tabpanel">
+    <ul class="nav nav-tabs" id="tab-bar" role="tablist">
+      <li role="kotlin-example" class="active">
+        <a id="26-tab" href="https://plugins.gradle.org/docs/publish-plugin#kotlin-example" role="tab" aria-controls="kotlin-example" data-toggle="tab">Kotlin</a>
+      </li>
+      <li role="groovy-example">
+        <a id="22-tab" href="https://plugins.gradle.org/docs/publish-plugin#groovy-example" role="tab" aria-controls="groovy-example" data-toggle="tab">Groovy</a>
+      </li>
+    </ul>
+
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active" id="kotlin-example">
+        <h3 id="kotlin-example-h">build.gradle.kts</h3>
+        <pre class="language-gradle" tabindex="0"><code class="language-gradle"><span class="token comment">// First, apply the publishing plugin</span>
+<span class="token keyword">plugins</span> <span class="token punctuation">{</span>
+  <span class="token comment">// Apply the Plugin Publish plugin to make plugin publication possible</span>
+  <span class="token comment">// The Plugin Publish plugin will in turn auto-apply the Gradle Plugin Development Plugin (java-gradle-plugin)</span>
+  <span class="token comment">// and the Maven Publish plugin (maven-publish)</span>
+  <span class="token function">id</span><span class="token punctuation">(</span><span class="token interpolation-string"><span class="token string">"com.gradle.plugin-publish"</span></span><span class="token punctuation">)</span> version <span class="token interpolation-string"><span class="token string">"2.0.0"</span></span>
+
+  <span class="token comment">// Apply the signing plugin (signing) if you want the published artifacts of your plugin be automatically signed.</span>
+
+  <span class="token comment">// Apply the shadow plugin (com.gradleup.shadow) if you want to automatically make the main jar</span>
+  <span class="token comment">// of your plugin be a fat one, shadowing its dependencies.</span>
+
+  <span class="token comment">// Apply more plugins, if needed, for example the kotlin plugin for a plugin written in Kotlin</span>
+  <span class="token comment">// or the groovy plugin if the plugin uses Groovy.</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// If your plugin has any external dependencies, users might need to declare repositories in their</span>
+<span class="token comment">// build settings so that Gradle can download them when using the plugins DSL.</span>
+<span class="token keyword">repositories</span> <span class="token punctuation">{</span>
+  <span class="token function">mavenCentral</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// The project version will be used as your plugin version when publishing.</span>
+version <span class="token operator">=</span> <span class="token interpolation-string"><span class="token string">"1.2"</span></span>
+group <span class="token operator">=</span> <span class="token interpolation-string"><span class="token string">"io.github.johndoe"</span></span>
+
+<span class="token comment">// Use java-gradle-plugin to generate plugin descriptors and specify both global and individual plugin properties.</span>
+<span class="token comment">// The names of the blocks inside "plugins" need to be unique, they will identify the plugins being configured.</span>
+<span class="token comment">// All properties are mandatory.</span>
+gradlePlugin <span class="token punctuation">{</span>
+  website<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token interpolation-string"><span class="token string">"https://github.com/johndoe/GradlePlugins"</span></span><span class="token punctuation">)</span>
+  vcsUrl<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token interpolation-string"><span class="token string">"https://github.com/johndoe/GradlePlugins"</span></span><span class="token punctuation">)</span>
+  <span class="token keyword">plugins</span> <span class="token punctuation">{</span>
+    <span class="token function">create</span><span class="token punctuation">(</span><span class="token interpolation-string"><span class="token string">"greetingsPlugin"</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      id <span class="token operator">=</span> <span class="token interpolation-string"><span class="token string">"io.github.johndoe.greeting"</span></span>
+      implementationClass <span class="token operator">=</span> <span class="token interpolation-string"><span class="token string">"io.github.johndoe.gradle.GreetingPlugin"</span></span>
+      displayName <span class="token operator">=</span> <span class="token interpolation-string"><span class="token string">"Gradle Greeting plugin"</span></span>
+      description <span class="token operator">=</span> <span class="token interpolation-string"><span class="token string">"Gradle plugin to say hello!"</span></span>
+      tags<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token function">listOf</span><span class="token punctuation">(</span><span class="token interpolation-string"><span class="token string">"search"</span></span><span class="token punctuation">,</span> <span class="token interpolation-string"><span class="token string">"tags"</span></span><span class="token punctuation">,</span> <span class="token interpolation-string"><span class="token string">"for"</span></span><span class="token punctuation">,</span> <span class="token interpolation-string"><span class="token string">"your"</span></span><span class="token punctuation">,</span> <span class="token interpolation-string"><span class="token string">"hello"</span></span><span class="token punctuation">,</span> <span class="token interpolation-string"><span class="token string">"plugin"</span></span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    <span class="token function">create</span><span class="token punctuation">(</span><span class="token interpolation-string"><span class="token string">"goodbyePlugin"</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      id <span class="token operator">=</span> <span class="token interpolation-string"><span class="token string">"io.github.johndoe.goodbye"</span></span>
+      implementationClass <span class="token operator">=</span> <span class="token interpolation-string"><span class="token string">"io.github.johndoe.gradle.GoodbyePlugin"</span></span>
+      displayName <span class="token operator">=</span> <span class="token interpolation-string"><span class="token string">"Gradle Goodbye plugin"</span></span>
+      description <span class="token operator">=</span> <span class="token interpolation-string"><span class="token string">"Gradle plugin to say goodbye!"</span></span>
+      tags<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token function">listOf</span><span class="token punctuation">(</span><span class="token interpolation-string"><span class="token string">"search"</span></span><span class="token punctuation">,</span> <span class="token interpolation-string"><span class="token string">"tags"</span></span><span class="token punctuation">,</span> <span class="token interpolation-string"><span class="token string">"for"</span></span><span class="token punctuation">,</span> <span class="token interpolation-string"><span class="token string">"your"</span></span><span class="token punctuation">,</span> <span class="token interpolation-string"><span class="token string">"goodbye"</span></span><span class="token punctuation">,</span> <span class="token interpolation-string"><span class="token string">"plugin"</span></span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+      </div>
+
+      <div role="tabpanel" class="tab-pane" id="groovy-example">
+        <h3 id="groovy-example-h">build.gradle</h3>
+        <pre class="language-gradle" tabindex="0"><code class="language-gradle"><span class="token comment">// First, apply the publishing plugin</span>
+<span class="token keyword">plugins</span> <span class="token punctuation">{</span>
+  <span class="token comment">// Apply the Plugin Publish plugin to make plugin publication possible.</span>
+  <span class="token comment">// The Plugin Publish plugin will in turn auto-apply the Gradle Plugin Development Plugin (java-gradle-plugin)</span>
+  <span class="token comment">// and the Maven Publish plugin (maven-publish).</span>
+  id <span class="token string">'com.gradle.plugin-publish'</span> version <span class="token string">'2.0.0'</span>
+
+  <span class="token comment">// Apply the signing plugin (signing) if you want the published artifacts of your plugin be automatically signed.</span>
+
+  <span class="token comment">// Apply the shadow plugin (com.gradleup.shadow) if you want to automatically make the main jar</span>
+  <span class="token comment">// of your plugin be a fat one, shadowing its dependencies.</span>
+
+  <span class="token comment">// Apply more plugins, if needed, for example the kotlin plugin for a plugin written in Kotlin</span>
+  <span class="token comment">// or the groovy plugin if the plugin uses Groovy.</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// If your plugin has any external dependencies, users might need to declare repositories in their</span>
+<span class="token comment">// build settings so that Gradle can download them when using the plugins DSL.</span>
+<span class="token keyword">repositories</span> <span class="token punctuation">{</span>
+  <span class="token function">mavenCentral</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// The project version will be used as your plugin version when publishing.</span>
+version <span class="token operator">=</span> <span class="token string">'1.2'</span>
+group <span class="token operator">=</span> <span class="token string">'io.github.johndoe'</span>
+
+<span class="token comment">// Use java-gradle-plugin to generate plugin descriptors and specify both global and individual plugin properties.</span>
+<span class="token comment">// The names of the blocks inside 'plugins' need to be unique, they will identify the plugins being configured.</span>
+<span class="token comment">// All properties are mandatory.</span>
+gradlePlugin <span class="token punctuation">{</span>
+  website <span class="token operator">=</span> <span class="token string">'https://github.com/johndoe/GradlePlugins'</span>
+  vcsUrl <span class="token operator">=</span> <span class="token string">'https://github.com/johndoe/GradlePlugins'</span>
+  <span class="token keyword">plugins</span> <span class="token punctuation">{</span>
+    greetingsPlugin <span class="token punctuation">{</span>
+      id <span class="token operator">=</span> <span class="token string">'io.github.johndoe.greeting'</span>
+      implementationClass <span class="token operator">=</span> <span class="token string">'io.github.johndoe.gradle.GreetingPlugin'</span>
+      displayName <span class="token operator">=</span> <span class="token string">'Gradle Greeting plugin'</span>
+      description <span class="token operator">=</span> <span class="token string">'Gradle plugin to say hello!'</span>
+      tags<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'search'</span><span class="token punctuation">,</span> <span class="token string">'tags'</span><span class="token punctuation">,</span> <span class="token string">'for'</span><span class="token punctuation">,</span> <span class="token string">'your'</span><span class="token punctuation">,</span> <span class="token string">'hello'</span><span class="token punctuation">,</span> <span class="token string">'plugin'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    goodbyePlugin <span class="token punctuation">{</span>
+      id <span class="token operator">=</span> <span class="token string">'io.github.johndoe.goodbye'</span>
+      implementationClass <span class="token operator">=</span> <span class="token string">'io.github.johndoe.gradle.GoodbyePlugin'</span>
+      displayName <span class="token operator">=</span> <span class="token string">'Gradle Goodbye plugin'</span>
+      description <span class="token operator">=</span> <span class="token string">'Gradle plugin to say goodbye!'</span>
+      tags<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'search'</span><span class="token punctuation">,</span> <span class="token string">'tags'</span><span class="token punctuation">,</span> <span class="token string">'for'</span><span class="token punctuation">,</span> <span class="token string">'your'</span><span class="token punctuation">,</span> <span class="token string">'goodby'</span><span class="token punctuation">,</span> <span class="token string">'plugin'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+      </div>
+    </div>
+  </div>
+
+  <h2 id="approval">Approval</h2>
+
+  <p>
+    When a new plugin is published it will go through a manual review process.
+    This usually happens only for the initial version.
+    The plugin publishing plugin will tell you if your plugin is pending acceptance when you publish.
+  </p>
+  <p>
+    <i><strong>NOTE:</strong> Any change of Maven group or plugin ID will cause the manual approval process to be triggered again.</i>
+  </p>
+
+  <p>
+    A Gradle engineer will inspect the metadata and decide whether to make it visible on the Portal or request changes to it.
+    If your plugin requires changes before it can be accepted, you will be contacted via the email address associated with your account.
+    You will also receive an email when your plugin is accepted.
+  </p>
+
+  <p>
+    All plugins must adhere to the following rules:
+  </p>
+
+  <h3>Plugins must have some functionality</h3>
+  <p>
+    "Hello world" type submissions, or any other plugin not having some minimal useful functionality will be rejected.
+  </p>
+
+  <h3>Plugins should be useful to a wide audience</h3>
+  <p>
+    Plugins that are too specific to a particular use case or company will be rejected.
+    Consider publishing it to a private Maven or Ivy repository if that is the case.
+  </p>
+
+  <h3>Plugins should be documented</h3>
+  <p>
+    There should be a <code>description</code> specifying the intent of the plugin.
+  </p>
+
+  <p>
+    <code>Tags</code> should be set to describe the categories the plugin covers.
+  </p>
+
+  <p>
+    The <code>project URL</code> should point to the documentation in English, to the project sources, or both.
+  </p>
+
+  <p>
+    The <code>VCL URL</code> should point to the plugin sources.
+    Plugins should ideally be open-source, unless there is a good reason to do otherwise.
+    Proprietary plugin authors should <a href="https://plugins.gradle.org/docs/get-help">reach out to us</a>.
+  </p>
+
+  <h3>Plugin IDs should trace back to the author</h3>
+
+  <p>
+    The group and artifact must reasonably represent the organization, person, and the plugin.
+  </p>
+
+  <p>
+    If a GitHub user <code>johndoe</code> publishes a plugin called <code>myplugin</code>, then an acceptable plugin ID would be <code>io.github.johndoe.myplugin</code>.
+    If it contains dashes, they should be used as is, e.g. <code>io.github.john-doe.myplugin</code>.
+    Note that while plugin ID and group ID should have the dashes, the package name should contain underscores instead, according to Java Language Specification.
+    <i><strong>NOTE:</strong> <code>com.github</code> is no longer accepted as a prefix, in order to align with the
+      <a href="https://central.sonatype.org/changelog/#2021-04-01-comgithub-is-not-supported-anymore-as-a-valid-coordinate">Maven Central policy</a>.</i>
+  </p>
+
+  <p>
+    Another example would be a corporate plugin, let's say from <code>mybusiness.com</code>; then the plugin ID should look like <code>com.mybusiness.pluginname</code>.
+    In this case, the author should also submit the plugin via a corporate account/email address.
+    We prefer group (as opposed to individual) addresses, to highlight that the organization (or a sub-group of it) is the owner of the plugin.
+  </p>
+
+  <p>
+    We will ask for proof of the domain ownership in the form of a TXT record added to the DNS entry.
+  </p>
+
+  <p>
+    Note that we align our requirements for plugin ID and group ID with the <a href="https://central.sonatype.org/publish/requirements/coordinates/">Maven Central requirements</a>.
+  </p>
+
+  <h3>The plugin ID and group ID should share the same top-level namespace</h3>
+
+  <p>
+    We require plugins to have a shared prefix in their ID and group coordinate.
+  </p>
+
+  <h3>Only final versions should be published</h3>
+  <p>
+    We will reject SNAPSHOT versions because it's not possible to override them anyways.
+  </p>
+
+  <h3>Plugins should be published from non-forked repositories</h3>
+  <p>
+    There shouldn't be multiple variants of the same plugin published on the Portal.
+    Plugin developers should try to work with the original author(s) to get their changes/improvements integrated.
+    Some exceptions are acceptable, for example, when the original repository is abandoned, and it doesn't accept contributions.
+  </p>
+
+  <h3>Plugins should comply with the Gradle Code of Conduct</h3>
+  <p>
+    Please refer to our <a href="https://gradle.org/conduct/">CoC</a>.
+  </p>
+
+  <h2 id="troubleshooting">Troubleshooting</h2>
+
+  <h3 id="publication-failed">Publication Failed</h3>
+
+  <p>
+    The problems described here happen during plugin publication and usually lead to the failure of
+    the publication process.
+  </p>
+
+  <h4>The GitHub group ID prefix can't be <code>com.github</code></h4>
+  <p>
+    Github has introduced a new, dedicated domain (<code>github.io</code>) for it’s Pages service,
+    back in 2013 (<a href="https://github.blog/2013-04-05-new-github-pages-domain-github-io/">see here</a>).
+    This year they have stopped automatically forwarding from the old, legacy domain (<code>github.com</code>)
+    to this new one.
+  </p>
+  <p>
+    Maven Central has then announced that they will react to this and that they will no longer allow
+    <code>com.github</code> as a valid group ID prefix (<a href="https://central.sonatype.org/changelog/#2021-04-01-comgithub-is-not-supported-anymore-as-a-valid-coordinate">see here</a>).
+  </p>
+  <p>
+    The Gradle Plugin Portal has also adopted this convention, so please use the <code>io.github</code>
+    prefix in your plugin configurations.
+  </p>
+
+  <h4>Plugin version can't be <code>SNAPSHOT</code></h4>
+  <p>
+    The Plugin Portal doesn't allow plugins to be published with versions ending in
+    <code>SNAPSHOT</code>, because they wouldn't behave as expected. All versions are considered
+    fixed, so re-publishing of the same version wouldn't be possible, thus the whole concept of
+    snapshots would be meaningless.
+  </p>
+  <p>
+    Please use fixed versions instead.
+  </p>
+
+  <h3 id="approval-denied">Approval Denied</h3>
+  <p>
+    The problems described here happen after the successful publication of the first version of a
+    plugin, if the plugin gets flagged for manual approval by the Portal administrators, and they
+    reject the plugin for various reasons. They will send you an email with the reasons for the
+    rejection.
+  </p>
+
+  <h4>Ownership can't be established</h4>
+  <p>
+    One typical scenario of this problem is when a plugin gets published from a GitHub (or similar)
+    repository, but the GitHub account can't be linked to the Plugin Portal account doing the publishing.
+    The solution to this is to either use a Plugin Portal account linked to a GitHub account
+    (you can log into the Plugin Portal via your GitHub account).
+  </p>
+  <p>
+    Another typical scenario is when a plugin belonging to an organization is being published, but
+    the publishing Plugin Portal account can't be linked to the organization. In such cases you
+    might be asked to prove ownership of the organization's domain by adding some random TXT DNS record
+    to your organization's domain host. Portal administrators will contact you and provide you with
+    the exact record.
+  </p>
+
+  <h4>Plugin is based on a forked repository</h4>
+  <p>
+    Having multiple variants of the same plugin, published from forked, potentially diverging repositories
+    could lead to a lot of confusion, so it's generally not encouraged. If you find yourself in this
+    situation, we encourage you to submit your contributions as Pull Requests to the original repository.
+  </p>
+  <p>
+    The exception to this rule are abandoned repositories, where indeed forking and taking ownership is the only option.
+  </p>
+
+  <h4>Plugin is lacking public documentation</h4>
+  <p>
+    One typical situation when this problem arises is when the website or VCS URLs provided during
+    plugin publication point to a broken or inaccessible destination. Another one is when the URLs
+    point to, for example, a public GitHub repository, but there is no documentation there
+    (empty README file) or none of it is in English.
+  </p>
+  <p>
+    The problem with the lack of documentation is that it makes the adoption of the plugin by the
+    community very unlikely.
+  </p>
+  <p>
+    The solution to this problem is to either make the documentation publicly available, or,
+    if your plugin is indeed private, consider publishing it to a private artifact repository.
+  </p>
+
+  <h2 id="done">You're done!</h2>
+  <p>
+    Your plugin is now part of the Gradle Plugin Portal and can be put to use by Gradle
+    users all over the world.
+  </p>
+  <p>
+    Thank you for contributing.
+  </p>
+</div>
+<script integrity="sha256-bzgPbiBbhlwatKiESkSqGJr5wldMGBU+GAbfeWwMqBM=">
+  $('#tab-bar').click(function (e) {
+    e.preventDefault();
+    $(this).tab('show');
+  });
+</script>
+
+    </div>
+  </div>
+  <footer>
+    
+<div class="terms">
+  <a href="https://plugins.gradle.org/docs/terms">Terms of Use</a> and
+  <a href="https://gradle.com/legal/privacy/">Privacy Policy</a> apply
+</div>
+
+    <p class="copyright">
+          © 2026 <a href="https://gradle.org/company/">
+      Gradle, Inc.</a>
+    </p>
+    <p class="copyright">
+      Gradle®, Develocity®, Build Scan®, and the Gradlephant logo are registered trademarks of Gradle, Inc.
+    </p>
+    <p class="copyright">
+      On this resource, "Gradle" typically means "Gradle Build Tool" and does not reference Gradle, Inc. and/or its subsidiaries.
+    </p>
+  </footer>
+  <script src="./Gradle - How do I publish my plugin__files/bootstrap-customizations.js"></script>
+
+
+
+</body></html>

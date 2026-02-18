@@ -1,0 +1,3 @@
+plugins {
+  id 'br.com.hhs.pygradle'
+}

@@ -1,0 +1,460 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    font-size: 16px;
+    color: #02303A;
+}
+
+.logo { text-align: center }
+.plugin-page .logo {
+    margin-top: 35px;
+    text-align: left;
+}
+.plugin-page .top-row .logo-wrapper {
+    padding-left: 0;
+}
+
+#content-wrapper {
+    min-height: calc(100% - 80px);
+}
+
+#content {
+    padding-bottom: 60px;
+}
+
+
+h1, h2, h3 {
+    color: #02303A;
+}
+
+body, h1, #search-results .plugin-id, .delete-key-button, .version-info h3 {
+    font-family: "Lato", "Helvetica Neue", Arial, sans-serif;
+}
+
+h2, h3 {
+    font-family: "Lato", "Helvetica Neue", Arial, sans-serif;
+}
+
+.search-page h1 {
+    font-size: 30px;
+    text-align: center;
+}
+
+.search-page h1 {
+    color: #02303A;
+}
+
+a {
+    color: #3CAFC6;
+}
+a:hover, a:focus {
+    color: #3CAFC6;
+    text-decoration: none;
+}
+
+header {
+    text-align: center;
+}
+
+header .navbar-brand img {
+    margin-top: -7px;
+}
+
+div.search {
+    margin: 0 0 5px 0;
+}
+
+div.search input {
+    height: 50px;
+    font-size: 1.57142em;
+    width: 100%;
+    padding-left: 50px;
+    background: url("../images/magnify.png") no-repeat 10px;
+}
+
+div.search input::-webkit-input-placeholder {
+    color: #ccc;
+}
+
+div.search input::-moz-placeholder {
+    color: #ccc;
+    opacity:  1;
+}
+
+div.search input:-ms-input-placeholder {
+    color: #ccc;
+}
+
+.box {
+    min-height: 400px;
+    border-radius: 8px;
+    background: #fff;
+}
+
+a.want-to-include {
+    display: block;
+    float: right;
+    color: #02303A;
+    margin-bottom: 24px; /* want 40px and padding on element below is about 16px */
+}
+div.results { margin: 0; }
+div.results table { width: 100%; border: none; margin-bottom: 0; }
+div.results table tbody, div.results table td, div.results table th, div.results table thead { border: none; }
+div.results table tbody > tr { border-top: 1px solid #efefef; margin: 12px; }
+div.results table tbody > tr:last-child {
+    border-bottom: 1px solid #efefef;
+}
+div.results table td { background: #fff; }
+div.results table td.name { width: 80%; }
+div.results table td.name h3 {
+    font-size: 22px;
+    margin: 6px 0 10px 0;
+}
+div.results table td.version {
+    width: 20%;
+    text-align: right;
+    line-height: 150%;
+}
+div.results table td.version .latest-version {
+    font-size: 16px;
+    color: #02303A;
+}
+div.results table td.version .date {
+    font-size: 90%;
+    color: #02303A;
+}
+div.results table td .plugin-tags { margin-top: 0.4em; }
+div.results table th {
+    padding-top: 1em;
+    color: #02303A;
+    font-weight: normal;
+}
+div.results table th.version {
+    text-align: right;
+}
+div.results div.page-link {
+    margin: 70px auto 28px auto;
+    text-align: center;
+}
+
+div.results div.page-link .btn {
+    display: inline-block;
+    width: 100px;
+
+    border: 1px solid #1DA2BD;
+
+    font-weight: bold;
+    font-size: 18px;
+    color: #1DA2BD;
+
+    margin-left: 10px;
+
+}
+
+div.results div.page-link .btn:hover, div.results div.page-link .btn:active {
+    color: #1DA2BD;
+    border-color: #1DA2BD;
+}
+
+div.results div.page-link .btn:hover {
+    background-color: transparent;
+}
+
+div.results div.page-link .btn:active {
+    background-color: #F7F7F8;
+    box-shadow: none;
+}
+
+@media only screen and (min-height: 870px) { div.results div.col-md-12 { min-height: 580px; } }
+
+footer {
+    position: relative;
+    clear: both;
+    padding: 15px;
+    text-align: center;
+    color: #aaa;
+    font-size: 12px;
+    background-color: #F7F7F8;
+    border-top: 1px solid #F7F7F8;
+}
+
+.gradle-logo-sm {
+    margin-left: auto;
+    margin-right: auto;
+    width: 40px;
+    height: auto;
+}
+
+.terms {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 12px;
+}
+
+footer p {
+    margin: 0;
+    padding: 0;
+}
+
+footer a { color: #aaa; }
+
+a.plugin-tag {
+    background-color: #F7F7F8;
+    border: 1px solid #F7F7F8;
+    border-radius: 2px;
+    padding: 4px;
+    font-size: 80%;
+}
+
+a.plugin-tag:hover { text-decoration: none; }
+
+.plugin-page detail {
+    margin-top: 50px;
+}
+
+.plugin-page h1 {
+    color: #02303A;
+    text-align: left;
+    font-size: 40px;
+}
+
+.plugin-header > * {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.search-page .plugin-header > .badges {
+    vertical-align: top;
+}
+
+.well {
+    border: #efefef;
+    background-color: #F7F7F8;
+}
+
+.plugin-page .version-info {
+    margin: 40px 0 20px 0;
+    padding: 20px 25px;
+    position: relative;
+}
+
+.plugin-page .plugin-info {
+    position: relative;
+}
+.plugin-page .plugin-info .delete-button-wrapper {
+    bottom: 0px;
+}
+
+.plugin-page .version-info h3 {
+    color: #02303A;
+    font-size: 22px;
+    margin: 0 0 10px 0;
+}
+.plugin-page .version-created-date {
+    color: #02303A;
+}
+
+.plugin-page .other-versions.dropdown {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+
+}
+.plugin-page .dropdown-toggle {
+    cursor: pointer;
+}
+
+.plugin-page .other-versions .dropdown-menu {
+    border-width: 3px;
+    border-radius: 0;
+}
+
+.plugin-page .other-versions .dropdown-menu a {
+    color: #02303A;
+    font-weight: bold;
+}
+
+.plugin-page .use h3 {
+    font-size: 16px;
+    color: #02303A;
+}
+
+.plugin-page .delete-button-wrapper {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+}
+
+.modal-backdrop {
+    bottom: 0;
+}
+
+#new-plugin-mechanism-info .panel { overflow: hidden }
+#new-plugin-mechanism-info .panel a,a:hover,a:active { color:  #1DA2BD }
+
+#new-plugin-mechanism-info-body h3 {
+    margin-top: 1.5em;
+    margin-bottom: 10px;
+    font-size: 24px;
+}
+#new-plugin-mechanism-info-body h3:first-of-type { margin-top: 0; }
+#new-plugin-mechanism-info-body pre { margin: 1em 2em; }
+
+.tabpanel h3 {
+    font-size: 20px;
+}
+
+pre {
+    border: 3px solid #efefef;
+    background-color: white;
+    font-size: 16px;
+}
+.plugin-page div.panel-group { margin: 20px 25px 48px 25px; font-size: 90%; }
+.plugin-page div.panel-group .panel-heading p { margin: 0; }
+.plugin-page div.panel-body ol { padding-left: 0px; list-style-position: inside; }
+
+div.error { text-align: center; margin-bottom: 2em; }
+div.error p { font-size: 140%; }
+
+code {
+    font-family: inconsolatamedium, Consolas, Monaco, 'Andale Mono', monospace;
+    color: #13697d;
+    background-color: inherit;
+}
+
+/* http://prismjs.com/download.html?themes=prism-okaidia&languages=clike+groovy */
+/** okaidia theme for JavaScript, CSS and HTML Loosely based on Monokai textmate theme by http://www.monokai.nl/ @author ocodia */
+code[class*="language-"], pre[class*="language-"] {
+    color: #02303A;
+    font-family: inconsolatamedium, Consolas, Monaco, 'Andale Mono', monospace;
+    direction: ltr;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+}
+
+img.owner-avatar {
+    height: 20px;
+    width: 20px;
+    vertical-align: middle;
+    margin-left: 1ex;
+}
+
+/* Code blocks */
+pre[class*="language-"] { padding: 1em; margin: .5em 0; overflow: auto; border-radius: 0.3em; }
+
+/* Inline code */
+:not(pre) > code[class*="language-"] { padding: .1em; }
+
+.token.comment, .token.prolog, .token.doctype, .token.cdata { color: slategray; }
+
+.token.selector, .token.attr-name, .token.string, .token.builtin { color: #13697d; }
+
+.dropdown { text-align: left; }
+
+.sidebar {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    height: 100%;
+    float: left;
+}
+
+.documentation-page-with-sidebar {
+    margin-left: 200px;
+}
+
+.documentation-page-with-sidebar h1 {
+    font-size: 32px;
+    margin-top: 10px;
+}
+
+.documentation-page-with-sidebar h2 {
+    font-size: 28px;
+    margin-top: 40px;
+}
+
+.documentation-page-with-sidebar h3 {
+    font-size: 24px;
+    margin-top: 40px;
+}
+
+.documentation-page-with-sidebar h4 {
+    font-size: 20px;
+    margin-top: 30px;
+}
+
+.documentation-page h1 {
+    font-size: 32px;
+    margin-top: 10px;
+}
+
+.documentation-page h2 {
+    font-size: 28px;
+    margin-top: 40px;
+}
+
+.documentation-page h3 {
+    font-size: 24px;
+    margin-top: 40px;
+}
+
+.documentation-page h4 {
+    font-size: 20px;
+    margin-top: 30px;
+}
+
+.documentation-page .alert {
+    background-color: #F7F7F8;
+    color: #999;
+}
+
+/* Lato (bold, regular) */
+@font-face {
+    font-family: Lato;
+    font-weight: 300;
+    font-style: normal;
+    src: url("https://assets.gradle.com/lato/fonts/lato-semibold/lato-semibold.woff2") format("woff2"),
+         url("https://assets.gradle.com/lato/fonts/lato-semibold/lato-semibold.woff") format("woff");
+}
+
+@font-face {
+    font-family: 'inconsolatamedium';
+    src: url('../fonts/inconsolata-webfont.eot');
+    src: url('../fonts/inconsolata-webfont.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/inconsolata-webfont.woff2') format('woff2'),
+    url('../fonts/inconsolata-webfont.woff') format('woff'),
+    url('../fonts/inconsolata-webfont.ttf') format('truetype'),
+    url('../fonts/inconsolata-webfont.svg#inconsolatamedium') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+summary {
+  display: list-item;
+}
+
+details[open] summary.with-hint::after {
+  content: "";
+}
+
+details:not([open]) summary.with-hint::after {
+  content: " (click to expand)";
+  color: gray;
+}
+
+textarea.description {
+    width: 100%;
+    margin-bottom: 10px;
+}
