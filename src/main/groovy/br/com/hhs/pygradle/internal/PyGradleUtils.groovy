@@ -174,8 +174,31 @@ class PyGradleUtils {
     extension.deps = []
     extension.apps = []
     extension.requirementLines = []
+    def inBlockComment = false
     depsFile.eachLine { line ->
-      def trimmed = line?.trim()
+      def working = line ?: ''
+      if (inBlockComment) {
+        def endIdx = working.indexOf('*/')
+        if (endIdx == -1) {
+          return
+        }
+        working = working.substring(endIdx + 2)
+        inBlockComment = false
+      }
+      while (true) {
+        def startIdx = working.indexOf('/*')
+        if (startIdx == -1) {
+          break
+        }
+        def endIdx = working.indexOf('*/', startIdx + 2)
+        if (endIdx == -1) {
+          working = working.substring(0, startIdx)
+          inBlockComment = true
+          break
+        }
+        working = working.substring(0, startIdx) + working.substring(endIdx + 2)
+      }
+      def trimmed = working.trim()
       if (!trimmed ||
           trimmed.startsWith('#') ||
           trimmed.startsWith('/*') ||
@@ -184,27 +207,27 @@ class PyGradleUtils {
         return
       }
       def dep = null
-      if ((dep = line =~ /package: (([\w.-]+)(\[[\w.-]+\])?), version: (latest|\d+(\.\w+){0,5}), mode: (lt|le|eq|compat|ne|gt|ge|none)/)) {
+      if ((dep = trimmed =~ /package: (([\w.-]+)(\[[\w.-]+\])?), version: (latest|\d+(\.\w+){0,5}), mode: (lt|le|eq|compat|ne|gt|ge|none)/)) {
         dep.each {
           extension.deps << [package: "${it[1]}", version: "${it[4]}", mode: "${it[6]}"]
           extension.requirementLines << buildRequirementLine(it[1], it[4], it[6])
         }
-      } else if ((dep = line =~ /package: (([\w.-]+)(\[[\w.-]+\])?), version: (latest|\d+(\.\w+){0,5})/)) {
+      } else if ((dep = trimmed =~ /package: (([\w.-]+)(\[[\w.-]+\])?), version: (latest|\d+(\.\w+){0,5})/)) {
         dep.each {
           def mode = it[4] && it[4] != 'latest' ? 'compat' : 'ge'
           extension.deps << [package: "${it[1]}", version: "${it[4]}", mode: mode]
           extension.requirementLines << buildRequirementLine(it[1], it[4], mode)
         }
-      } else if ((dep = line =~ /package: (([\w.-]+)(\[[\w.-]+\])?)/)) {
+      } else if ((dep = trimmed =~ /package: (([\w.-]+)(\[[\w.-]+\])?)/)) {
         dep.each {
           extension.deps << [package: "${it[1]}", version: 'latest', mode: 'ge']
           extension.requirementLines << buildRequirementLine(it[1], 'latest', 'ge')
         }
-      } else if ((dep = line =~ /binary: (([\w.-]+)(\[[\w.-]+\])?), version: (latest|\d+(\.\w+){0,5})/)) {
+      } else if ((dep = trimmed =~ /binary: (([\w.-]+)(\[[\w.-]+\])?), version: (latest|\d+(\.\w+){0,5})/)) {
         dep.each {
           extension.apps << [binary: "${it[1]}", version: "${it[4]}"]
         }
-      } else if ((dep = line =~ /binary: (([\w.-]+)(\[[\w.-]+\])?)/)) {
+      } else if ((dep = trimmed =~ /binary: (([\w.-]+)(\[[\w.-]+\])?)/)) {
         dep.each {
           extension.apps << [binary: "${it[1]}", version: 'latest']
         }

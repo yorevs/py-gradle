@@ -63,6 +63,57 @@ binary: jq
   }
 
   /**
+   * Ignore block comments while still parsing valid entries.
+   */
+  @Test
+  void shouldIgnoreBlockComments() {
+    def depsFile = temp.newFile('dependencies.hspd')
+    depsFile.text = '''
+/*
+package: badpkg, version: 0.0.1
+* still comment
+*/
+package: hspylib, version: 1.2.3 /* inline comment */
+binary: curl /* inline comment */
+/* one-line comment */ package: simplepkg
+'''.trim()
+
+    extension.depsFile = depsFile
+    extension.deps = []
+    extension.apps = []
+
+    PyGradleUtils.readDependencies(extension)
+
+    assert extension.deps.size() == 2
+    assert extension.deps[0] == [package: 'hspylib', version: '1.2.3', mode: 'compat']
+    assert extension.deps[1] == [package: 'simplepkg', version: 'latest', mode: 'ge']
+    assert extension.apps.size() == 1
+    assert extension.apps[0] == [binary: 'curl', version: 'latest']
+  }
+
+  /**
+   * Handle multiple block comments on a single line.
+   */
+  @Test
+  void shouldIgnoreMultipleBlockCommentsOnLine() {
+    def depsFile = temp.newFile('dependencies.hspd')
+    depsFile.text = '''
+package: alpha/* c1 */, version: 1.0.0/* c2 */, mode: ge
+/* c3 */ package: beta/* c4 */
+'''.trim()
+
+    extension.depsFile = depsFile
+    extension.deps = []
+    extension.apps = []
+
+    PyGradleUtils.readDependencies(extension)
+
+    assert extension.deps.size() == 2
+    assert extension.deps[0] == [package: 'alpha', version: '1.0.0', mode: 'ge']
+    assert extension.deps[1] == [package: 'beta', version: 'latest', mode: 'ge']
+  }
+
+  /**
    * Verify pip help detection of --break-system-packages.
    */
   @Test
