@@ -21,15 +21,22 @@ class PyGradleInitTask extends PyGradleBaseTask {
   void initProject() {
     def extension = getExtension()
     def force = project.hasProperty('forceInit') && Boolean.valueOf(project.getProperty('forceInit'))
+    def skipVenv = project.hasProperty('skipVenv') && Boolean.valueOf(project.getProperty('skipVenv'))
     def appName = project.findProperty('initAppName') ?: extension.appName ?: project.name
     def rootName = project.findProperty('initRootName') ?: project.name
-    def groupId = project.findProperty('initGroup') ?: project.group ?: 'com.example'
     def version = project.findProperty('initVersion') ?: project.version ?: '0.1.0'
+    def pythonVersion = project.findProperty('pythonVersion') ?: extension.pythonVersion ?: '3.11.14'
+    def venvDir = project.file('.venv')
+    def pythonSystemExec = resolvePythonExecutable(pythonVersion)
+    def venvPythonPath = resolveVenvPythonPath(venvDir)
+    def pythonExecForConfig = skipVenv ? pythonSystemExec : venvPythonPath
 
     def files = [
       [path: 'settings.gradle', content: settingsGradleContent(rootName)],
       [path: 'build.gradle', content: buildGradleContent()],
       [path: 'gradle.properties', content: gradlePropertiesContent(appName, version)],
+      [path: 'pygradle.properties', content: pygradlePropertiesContent(appName, version, pythonVersion, pythonExecForConfig, skipVenv)],
+      [path: 'pygradle.yaml', content: pygradleYamlContent(appName, version, pythonVersion, pythonExecForConfig, skipVenv)],
       [path: 'dependencies.hspd', content: dependenciesContent()],
       [path: 'src/main/python/__main__.py', content: mainPyContent(appName)],
       [path: 'src/main/python/resources/application.properties', content: applicationPropertiesContent(appName)],
@@ -44,8 +51,16 @@ class PyGradleInitTask extends PyGradleBaseTask {
       'src/test/resources'
     ]
 
-    dirs.each { dir -> ensureDir(dir, force) }
-    files.each { file -> writeFile(file.path, file.content, force) }
+    for (String dir : dirs) {
+      ensureDir(dir, force)
+    }
+    for (def file : files) {
+      writeFile(file.path, file.content, force)
+    }
+
+    if (!skipVenv) {
+      createVirtualEnv(venvDir, pythonSystemExec, force)
+    }
 
     println('PyGradle init complete.')
     println('Next steps:')
@@ -93,27 +108,45 @@ class PyGradleInitTask extends PyGradleBaseTask {
   }
 
   private String settingsGradleContent(String rootName) {
-    """rootProject.name = '${rootName}'\n"""
+    """// Project settings (Gradle needs a project name).\n// Change the name if you want a different folder/app name.\nrootProject.name = '${rootName}'\n"""
   }
 
   private String buildGradleContent() {
-    """plugins {
+    """// Build configuration (apply the PyGradle plugin).\n// This gives you tasks like build, lint, test, and packaging.\nplugins {
   id 'br.com.hhs.pygradle'
 }
 """
   }
 
   private String gradlePropertiesContent(String appName, String version) {
-    """app_name      = ${appName}
+    """# Project metadata used by the plugin.\n# app_name: used in outputs and metadata.\n# app_version: used in versioning and packaging tasks.\napp_name      = ${appName}
 app_version   = ${version}
 """
   }
 
+  private String pygradlePropertiesContent(String appName, String version, String pythonVersion, String pythonExec, boolean skipVenv) {
+    def venvNote = skipVenv ?
+      '# pythonExec uses the system Python because venv creation was skipped.' :
+      '# pythonExec points to .venv/bin/python (or Scripts/python.exe on Windows).'
+    """# PyGradle configuration (editable; overrides defaults).\n# app_name/app_version are used in versioning and publishing tasks.\n# pythonVersion selects the Python used to create the virtual env.\n${venvNote}\napp_name=${appName}\napp_version=${version}\npythonVersion=${pythonVersion}\npythonExec=${pythonExec}\n"""
+  }
+
+  private String pygradleYamlContent(String appName, String version, String pythonVersion, String pythonExec, boolean skipVenv) {
+    def venvNote = skipVenv ?
+      '# pythonExec uses the system Python because venv creation was skipped.' :
+      '# pythonExec points to .venv/bin/python (or Scripts/python.exe on Windows).'
+    """# PyGradle configuration (editable; overrides defaults).\n# application.name/version are used in versioning and publishing tasks.\n# python.version selects the Python used to create the virtual env.\n${venvNote}\napplication:\n  name: ${appName}\n  version: ${version}\n\npython:\n  version: ${pythonVersion}\n  executable: ${pythonExec}\n"""
+  }
+
   private String dependenciesContent() {
     """/*
-  Python dependencies file
-*/
+  Python dependencies file (used to generate requirements.txt).
 
+  Examples:
+    package: requests, version: latest
+    package: numpy, version: 1.26.4, mode: ge
+    binary: git, version: latest
+*/
 """
   }
 
@@ -121,7 +154,10 @@ app_version   = ${version}
     """#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-\"\"\"Entry point.\"\"\"
+\"\"\"Entry point for running the app.
+
+This file is where your app starts when you run ./gradlew run (or python -m).
+\"\"\"
 
 import sys
 
@@ -138,11 +174,14 @@ if __name__ == '__main__':
   }
 
   private String applicationPropertiesContent(String appName) {
-    """${appName}.message=Hello from ${appName}\n"""
+    """# Application configuration (simple key/value pairs).\n${appName}.message=Hello from ${appName}\n"""
   }
 
   private String testMainContent() {
-    """\"\"\"Unit tests.\"\"\"
+    """\"\"\"Unit tests.
+
+This is a starter test to confirm the test harness works.
+\"\"\"
 
 import unittest
 
@@ -161,6 +200,74 @@ if __name__ == '__main__':
   }
 
   private String testPropertiesContent() {
-    """any.property=12345\n"""
+    """# Test configuration (separate from main config).\nany.property=12345\n"""
+  }
+
+  /**
+   * Resolve a python executable for a requested version.
+   *
+   * @param pythonVersion Python version string.
+   * @return Python executable command.
+   */
+  private String resolvePythonExecutable(String pythonVersion) {
+    def versionParts = pythonVersion.split('\\.')
+    def majorMinor = versionParts.length >= 2 ? "${versionParts[0]}.${versionParts[1]}" : pythonVersion
+    def candidates = ["python${majorMinor}", 'python3', 'python']
+    for (String candidate : candidates) {
+      if (commandExists(candidate)) {
+        return candidate
+      }
+    }
+    return 'python3'
+  }
+
+  /**
+   * Resolve the venv python path for the OS.
+   *
+   * @param venvDir Venv directory.
+   * @return Python executable path.
+   */
+  private String resolveVenvPythonPath(File venvDir) {
+    def os = getExtension().os?.toLowerCase()
+    def isWindows = os?.contains('win')
+    def relPath = isWindows ? 'Scripts/python.exe' : 'bin/python'
+    return new File(venvDir, relPath).path
+  }
+
+  /**
+   * Create a virtual environment.
+   *
+   * @param venvDir Venv directory.
+   * @param pythonExec Python executable.
+   * @param force Overwrite flag.
+   */
+  private void createVirtualEnv(File venvDir, String pythonExec, boolean force) {
+    if (venvDir.exists() && !force) {
+      println("Skip existing venv: ${venvDir}")
+      return
+    }
+    if (isDryRun()) {
+      println("DRY-RUN: ${pythonExec} -m venv ${venvDir}")
+      return
+    }
+    project.exec {
+      commandLine pythonExec, '-m', 'venv', venvDir.path
+    }
+  }
+
+  /**
+   * Check if a command exists in PATH.
+   *
+   * @param command Command name.
+   * @return True if present.
+   */
+  private boolean commandExists(String command) {
+    def output = new ByteArrayOutputStream()
+    def result = project.exec {
+      commandLine 'bash', '-c', "command -v ${command}"
+      ignoreExitValue true
+      standardOutput = output
+    }
+    return result.exitValue == 0 && output.toString().trim()
   }
 }

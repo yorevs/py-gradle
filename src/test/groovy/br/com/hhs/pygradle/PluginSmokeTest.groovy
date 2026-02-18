@@ -67,7 +67,7 @@ plugins {
     depsFile.text = '''
 package: demo, version: 1.2.3, mode: ge
 package: other, version: latest
-'''.trim() + "\\n"
+'''.trim() + "\n"
     new File(projectDir, 'src/main').mkdirs()
 
     def result = GradleRunner.create()
@@ -157,5 +157,101 @@ plugins {
     assert !buildDist.exists()
     assert !buildBuild.exists()
     assert !srcDist.exists()
+  }
+
+  /**
+   * Verify pyGradleInit scaffolds core files.
+   */
+  @Test
+  void shouldScaffoldProjectFiles() {
+    def projectDir = temp.newFolder('init-project')
+    def settingsFile = new File(projectDir, 'settings.gradle')
+    settingsFile.text = "rootProject.name = 'init-project'\n"
+
+    def buildFile = new File(projectDir, 'build.gradle')
+    buildFile.text = """
+plugins {
+  id 'br.com.hhs.pygradle'
+}
+""".trim() + "\n"
+
+    def result = GradleRunner.create()
+      .withProjectDir(projectDir)
+      .withArguments('pyGradleInit', '-PskipVenv=true')
+      .withPluginClasspath()
+      .build()
+
+    assert result.task(':pyGradleInit').outcome == SUCCESS
+    def pygradleProps = new File(projectDir, 'pygradle.properties')
+    assert pygradleProps.exists()
+    assert pygradleProps.text.contains('pythonVersion=')
+    assert pygradleProps.text.contains('pythonExec=')
+    assert new File(projectDir, 'pygradle.yaml').exists()
+    assert !new File(projectDir, '.venv').exists()
+    assert new File(projectDir, 'dependencies.hspd').exists()
+    assert new File(projectDir, 'src/main/python/__main__.py').exists()
+    assert new File(projectDir, 'src/test/test_main.py').exists()
+  }
+
+  /**
+   * Verify pyGradleInit uses the requested pythonVersion.
+   */
+  @Test
+  void shouldRespectPythonVersionOverride() {
+    def projectDir = temp.newFolder('init-python-version')
+    def settingsFile = new File(projectDir, 'settings.gradle')
+    settingsFile.text = "rootProject.name = 'init-python-version'\n"
+
+    def buildFile = new File(projectDir, 'build.gradle')
+    buildFile.text = """
+plugins {
+  id 'br.com.hhs.pygradle'
+}
+""".trim() + "\n"
+
+    def result = GradleRunner.create()
+      .withProjectDir(projectDir)
+      .withArguments('pyGradleInit', '-PskipVenv=true', '-PpythonVersion=3.12.1')
+      .withPluginClasspath()
+      .build()
+
+    assert result.task(':pyGradleInit').outcome == SUCCESS
+    def pygradleProps = new File(projectDir, 'pygradle.properties')
+    assert pygradleProps.text.contains('pythonVersion=3.12.1')
+  }
+
+  /**
+   * Verify pygradle.yaml overrides are applied.
+   */
+  @Test
+  void shouldUsePyGradleYamlOverrides() {
+    def projectDir = temp.newFolder('yaml-overrides')
+    def settingsFile = new File(projectDir, 'settings.gradle')
+    settingsFile.text = "rootProject.name = 'yaml-overrides'\n"
+
+    def yamlFile = new File(projectDir, 'pygradle.yaml')
+    yamlFile.text = "python:\n  executable: python3\n"
+
+    def buildFile = new File(projectDir, 'build.gradle')
+    buildFile.text = """
+plugins {
+  id 'br.com.hhs.pygradle'
+}
+
+task printPythonExec {
+  doLast {
+    println("PYTHON_EXEC=" + project.ext.python)
+  }
+}
+""".trim() + "\n"
+
+    def result = GradleRunner.create()
+      .withProjectDir(projectDir)
+      .withArguments('printPythonExec')
+      .withPluginClasspath()
+      .build()
+
+    assert result.task(':printPythonExec').outcome == SUCCESS
+    assert result.output.contains('PYTHON_EXEC=python3')
   }
 }

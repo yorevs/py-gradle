@@ -63,6 +63,30 @@ pyGradle {
 }
 ```
 
+You can also set properties in `pygradle.properties` or `pygradle.yaml` at the project root.
+These override defaults and can be used to set `pythonExec`, `pythonHome`, and `pythonVersion`.
+
+Example `pygradle.properties`:
+
+```text
+app_name=rpg-game
+app_version=0.0.1
+pythonVersion=3.11.14
+pythonExec=.venv/bin/python
+```
+
+Example `pygradle.yaml`:
+
+```yaml
+application:
+  name: rpg-game
+  version: 0.0.1
+
+python:
+  version: 3.11.14
+  executable: .venv/bin/python
+```
+
 Gradle properties that are used as defaults when present:
 - `app_name`, `app_version`, `author`, `siteUrl`
 - `pythonPath`, `failScore`, `versionFile`, `buildTools`
@@ -93,6 +117,18 @@ Overwrite existing files:
 
 ```bash
 ./gradlew pyGradleInit -PforceInit=true
+```
+
+Select a Python version (default: 3.11.14):
+
+```bash
+./gradlew pyGradleInit -PpythonVersion=3.11.14
+```
+
+Skip virtual environment creation:
+
+```bash
+./gradlew pyGradleInit -PskipVenv=true
 ```
 
 ## Dry-Run Mode

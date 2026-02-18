@@ -38,6 +38,21 @@ pyGradle {
 }
 ```
 
+You can also set values in `pygradle.properties` or `pygradle.yaml` at the project root.
+`pyGradleInit` creates `pygradle.properties` and sets `pythonExec` to the venv Python when a venv is created.
+
+Example `pygradle.yaml` (hierarchical):
+
+```yaml
+application:
+  name: my-app
+  version: 0.1.0
+
+python:
+  version: 3.11.14
+  executable: .venv/bin/python
+```
+
 ### Validation
 Run `validateEnvironment` to check required tools and config values are available.
 If missing tools are detected, it will print installation hints and suggest running:
@@ -58,6 +73,8 @@ Create or update a project scaffold:
 ```
 
 Use `-PforceInit=true` to overwrite existing files.
+Use `-PpythonVersion=x.y.z` to choose the Python version (default: 3.11.14).
+Use `-PskipVenv=true` to skip virtual environment creation.
 
 ### Dry-Run Mode
 For destructive tasks (installs, docker start/stop, publish), add `-PdryRun=true`

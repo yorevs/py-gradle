@@ -69,7 +69,7 @@ class PyGradlePlugin implements Plugin<Project> {
   @Override
   void apply(Project project) {
     def extension = project.extensions.create('pyGradle', PyGradleExtension, project)
-    extension.python = PyGradleUtils.detectPython(project)
+    extension.python = PyGradleUtils.detectPython(project, extension.pythonExec, extension.pythonHome)
     extension.space = PyGradleUtils.detectSpace(project, extension.python)
 
     project.ext.set('sourceRoot', extension.sourceRoot)

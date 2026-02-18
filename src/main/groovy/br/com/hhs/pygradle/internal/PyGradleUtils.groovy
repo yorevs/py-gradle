@@ -29,8 +29,13 @@ class PyGradleUtils {
    * @param project The Gradle project.
    * @return Python executable path.
    */
-  static String detectPython(Project project) {
-    def pythonHome = System.getenv('PYTHON_HOME') ?: null
+  static String detectPython(Project project, String pythonExecOverride = null, String pythonHomeOverride = null) {
+    def pythonExec = pythonExecOverride ?: project.findProperty('pythonExec')
+    if (pythonExec != null && pythonExec.toString().trim()) {
+      return pythonExec.toString().trim()
+    }
+
+    def pythonHome = pythonHomeOverride ?: project.findProperty('pythonHome') ?: System.getenv('PYTHON_HOME') ?: null
     if (pythonHome != null) {
       return pythonHome + '/python3'
     }

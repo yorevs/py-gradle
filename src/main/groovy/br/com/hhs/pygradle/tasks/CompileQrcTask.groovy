@@ -33,6 +33,7 @@ class CompileQrcTask extends PyGradleBaseTask {
         commandLine extension.pyrcc, file.path
       }
     }
+    writeMarker(getOutputRootDir())
   }
 
   /**
@@ -52,6 +53,19 @@ class CompileQrcTask extends PyGradleBaseTask {
    */
   @OutputDirectory
   File getOutputRootDir() {
-    project.file(getExtension().sourceRoot)
+    project.file("${project.buildDir}/pygradle/compileQrc")
+  }
+
+  /**
+   * Write a marker file for task outputs.
+   *
+   * @param outputDir Output directory.
+   */
+  private void writeMarker(File outputDir) {
+    if (isDryRun()) {
+      return
+    }
+    outputDir.mkdirs()
+    new File(outputDir, 'compiled.marker').setText("compiled:${System.currentTimeMillis()}\n")
   }
 }
