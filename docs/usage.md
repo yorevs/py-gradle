@@ -65,6 +65,8 @@ If missing tools are detected, it will print installation hints and suggest runn
 ./gradlew installPyGradleTools -PexecuteInstall=true
 ```
 
+Note: Docker and Poetry are not installed by this helper. Install them manually if you use Docker or Poetry tasks.
+
 ### Project Scaffold
 Create or update a project scaffold:
 

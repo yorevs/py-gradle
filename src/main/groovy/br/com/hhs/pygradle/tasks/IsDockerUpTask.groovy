@@ -20,6 +20,7 @@ class IsDockerUpTask extends PyGradleBaseTask {
    */
   @TaskAction
   void isDockerUp() {
+    println('Warning: Docker tasks require Docker to be installed and running.')
     def result = project.exec {
       commandLine 'docker', 'ps'
       ignoreExitValue true

@@ -20,6 +20,7 @@ class PoetryInstallTask extends PyGradleBaseTask {
    */
   @TaskAction
   void poetryInstall() {
+    println('Warning: Poetry tasks require Poetry to be installed and available on PATH.')
     project.exec {
       commandLine 'poetry', 'install'
     }

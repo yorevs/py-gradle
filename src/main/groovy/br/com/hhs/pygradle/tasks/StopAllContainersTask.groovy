@@ -21,6 +21,7 @@ class StopAllContainersTask extends PyGradleBaseTask {
    */
   @TaskAction
   void stopAllContainers() {
+    println('Warning: Docker tasks require Docker to be installed and running.')
     def extension = getExtension()
     extension.containers.each { String container ->
       println("Stopping and removing container: ${container}")

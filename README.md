@@ -106,6 +106,8 @@ Install tooling helpers (prints commands, run with `-PexecuteInstall=true` to ex
 ./gradlew installPyGradleTools -PexecuteInstall=true
 ```
 
+Note: Docker and Poetry are not installed by this helper. Install them manually if you use Docker or Poetry tasks.
+
 ## Project Scaffold
 Create a starter project or update an existing one:
 

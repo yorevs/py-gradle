@@ -29,18 +29,9 @@ class InstallPyGradleToolsTask extends PyGradleBaseTask {
 
     def commands = []
 
-    if (isMac) {
-      commands << 'brew install --cask docker'
-      commands << 'brew install poetry'
-    } else if (isLinux) {
-      commands << '# Install Docker: https://docs.docker.com/engine/install/'
-      commands << '# Install Poetry: https://python-poetry.org/docs/#installation'
-    } else {
-      commands << '# Install Docker: https://docs.docker.com/get-docker/'
-      commands << '# Install Poetry: https://python-poetry.org/docs/#installation'
-    }
-
-    commands << "${extension.python} -m pip install bumpver twine pdoc isort black mypy pylint"
+    def pythonExec = extension.pythonExec ?: extension.python
+    println("Using Python executable: ${pythonExec}")
+    commands << "${pythonExec} -m pip install bumpver twine pdoc isort black mypy pylint"
 
     println('Install commands:')
     commands.each { cmd -> println("  ${cmd}") }

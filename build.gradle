@@ -4,7 +4,15 @@ plugins {
 }
 
 group = 'br.com.hhs'
-version = findProperty('app_version') ?: '0.1.0'
+def readAppVersion = {
+  def props = new Properties()
+  def propsFile = file('gradle.properties')
+  if (propsFile.exists()) {
+    propsFile.withInputStream { stream -> props.load(stream) }
+  }
+  props.getProperty('app_version') ?: '0.1.0'
+}
+version = readAppVersion()
 
 description = 'Gradle plugin for Python applications.'
 
@@ -32,6 +40,39 @@ tasks.register('ciTest') { task ->
   task.dependsOn 'test'
 }
 
+def bumpPublishPatch = tasks.register('bumpPublishPatch') { task ->
+  task.group = 'Publishing'
+  task.description = 'Bump patch version in gradle.properties before publishing.'
+  task.outputs.upToDateWhen { false }
+  task.doLast {
+    def propsFile = file('gradle.properties')
+    def props = new Properties()
+    if (propsFile.exists()) {
+      propsFile.withInputStream { stream -> props.load(stream) }
+    }
+    def current = props.getProperty('app_version') ?: '0.1.0'
+    def parts = current.tokenize('.')
+    def major = parts.size() > 0 ? parts[0].toInteger() : 0
+    def minor = parts.size() > 1 ? parts[1].toInteger() : 0
+    def patch = parts.size() > 2 ? parts[2].toInteger() : 0
+    def next = "${major}.${minor}.${patch + 1}"
+    props.setProperty('app_version', next)
+    propsFile.withOutputStream { stream -> props.store(stream, null) }
+    println("Bumped app_version to ${next}")
+  }
+}
+
+def refreshPublishVersion = tasks.register('refreshPublishVersion') { task ->
+  task.group = 'Publishing'
+  task.description = 'Reload app_version from gradle.properties for publishing.'
+  task.outputs.upToDateWhen { false }
+  task.dependsOn bumpPublishPatch
+  task.doLast {
+    project.version = readAppVersion()
+    println("Publish version set to ${project.version}")
+  }
+}
+
 gradlePlugin {
   website = findProperty('siteUrl') ?: 'https://github.com/yorevs/py-gradle'
   vcsUrl = findProperty('siteUrl') ?: 'https://github.com/yorevs/py-gradle'
@@ -43,6 +84,25 @@ gradlePlugin {
       description = 'Gradle plugin for Python applications.'
       tags.set(['python', 'build', 'automation'])
     }
+  }
+}
+
+def publishRequested = gradle.startParameter.taskNames.any { name ->
+  name == 'publishPlugins' || name.endsWith(':publishPlugins')
+}
+
+if (publishRequested) {
+  tasks.named('jar').configure { task ->
+    task.dependsOn refreshPublishVersion
+  }
+  tasks.matching { task ->
+    def name = task.name
+    name == 'sourcesJar' || name == 'javadocJar' ||
+      name.startsWith('generateMetadataFileFor') || name.startsWith('generatePomFileFor') ||
+      name == 'publishPlugins'
+  }.configureEach { task ->
+    task.dependsOn refreshPublishVersion
+    task.dependsOn 'jar'
   }
 }
 
