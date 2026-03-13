@@ -1,0 +1,63 @@
+package io.github.hs_teams.pygradle.tasks
+
+import org.gradle.api.GradleException
+import org.gradle.api.tasks.TaskAction
+
+/**
+ * Task to install PyGradle toolchain dependencies.
+ */
+class InstallPyGradleToolsTask extends PyGradleBaseTask {
+  /**
+   * Create a new install tools task.
+   */
+  InstallPyGradleToolsTask() {
+    group = 'Setup'
+    description = 'Install required external tools for PyGradle'
+  }
+
+  /**
+   * Execute the task action.
+   */
+  @TaskAction
+  void installTools() {
+    def extension = getExtension()
+    def os = extension.os?.toLowerCase()
+    def isMac = os?.contains('mac')
+    def isLinux = os?.contains('linux')
+    def executeInstall = project.hasProperty('executeInstall') &&
+      Boolean.valueOf(project.getProperty('executeInstall'))
+
+    def commands = []
+
+    def pythonExec = extension.pythonExec ?: extension.python
+    println("Using Python executable: ${pythonExec}")
+    commands << "${pythonExec} -m pip install bumpver twine pdoc isort black mypy pylint"
+
+    println('Install commands:')
+    commands.each { cmd -> println("  ${cmd}") }
+
+    if (!executeInstall) {
+      println('\nTo run automatically, re-run with -PexecuteInstall=true')
+      return
+    }
+
+    commands.each { cmd ->
+      if (cmd.startsWith('#')) {
+        println("Skipping manual step: ${cmd}")
+      } else {
+        if (cmd.startsWith('brew')) {
+          if (!isMac) {
+            throw new GradleException('Homebrew is only supported on macOS in this task.')
+          }
+        }
+        if (isDryRun()) {
+          println("DRY-RUN: ${cmd}")
+        } else {
+          project.exec {
+            commandLine 'bash', '-c', cmd
+          }
+        }
+      }
+    }
+  }
+}

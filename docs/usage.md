@@ -21,7 +21,7 @@ Apply the plugin in a consuming project:
 
 ```gradle
 plugins {
-  id 'br.com.hhs.pygradle'
+  id 'io.github.hs_teams.pygradle'
 }
 ```
 

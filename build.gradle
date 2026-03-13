@@ -3,7 +3,6 @@ plugins {
   id 'groovy'
 }
 
-group = 'br.com.hhs'
 def readAppVersion = {
   def props = new Properties()
   def propsFile = file('gradle.properties')
@@ -12,20 +11,25 @@ def readAppVersion = {
   }
   props.getProperty('app_version') ?: '0.1.0'
 }
-version = readAppVersion()
 
+// Set group and version for publishing
+group = 'hs-teams.github.io'
+version = readAppVersion()
 description = 'Gradle plugin for Python applications.'
 
+// Configure Java toolchain for compilation and testing
 java {
   toolchain {
     languageVersion = JavaLanguageVersion.of(21)
   }
 }
 
+// Configure plugin publishing metadata
 repositories {
   mavenCentral()
 }
 
+// Define dependencies for plugin implementation and testing
 dependencies {
   implementation gradleApi()
   implementation localGroovy()
@@ -33,6 +37,7 @@ dependencies {
   testImplementation 'junit:junit:4.13.2'
 }
 
+// Define a CI test task that validates plugins and runs tests
 tasks.register('ciTest') { task ->
   task.group = 'Verification'
   task.description = 'Run plugin tests for CI.'
@@ -40,6 +45,7 @@ tasks.register('ciTest') { task ->
   task.dependsOn 'test'
 }
 
+// Define a task to bump patch version in gradle.properties before publishing
 def bumpPublishPatch = tasks.register('bumpPublishPatch') { task ->
   task.group = 'Publishing'
   task.description = 'Bump patch version in gradle.properties before publishing.'
@@ -62,6 +68,7 @@ def bumpPublishPatch = tasks.register('bumpPublishPatch') { task ->
   }
 }
 
+// Define a task to refresh the project version from gradle.properties before publishing
 def refreshPublishVersion = tasks.register('refreshPublishVersion') { task ->
   task.group = 'Publishing'
   task.description = 'Reload app_version from gradle.properties for publishing.'
@@ -73,13 +80,14 @@ def refreshPublishVersion = tasks.register('refreshPublishVersion') { task ->
   }
 }
 
+// Configure plugin metadata for publishing to the Gradle Plugin Portal
 gradlePlugin {
-  website = findProperty('siteUrl') ?: 'https://github.com/yorevs/py-gradle'
-  vcsUrl = findProperty('siteUrl') ?: 'https://github.com/yorevs/py-gradle'
+  website = findProperty('siteUrl') ?: 'https://github.com/hs-teams/py-gradle'
+  vcsUrl = findProperty('siteUrl') ?: 'https://github.com/hs-teams/py-gradle'
   plugins {
     pyGradle {
-      id = 'br.com.hhs.pygradle'
-      implementationClass = 'br.com.hhs.pygradle.PyGradlePlugin'
+      id = 'io.github.hs_teams.pygradle'
+      implementationClass = 'io.github.hs_teams.pygradle.PyGradlePlugin'
       displayName = 'PyGradle'
       description = 'Gradle plugin for Python applications.'
       tags.set(['python', 'build', 'automation'])
