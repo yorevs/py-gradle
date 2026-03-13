@@ -29,7 +29,7 @@ class PluginSmokeTest {
     def buildFile = new File(projectDir, 'build.gradle')
     buildFile.text = """
 plugins {
-  id 'io.github.hs_teams.pygradle'
+  id 'io.github.hs-teams.pygradle'
 }
 """.trim() + "\n"
 
@@ -59,7 +59,7 @@ plugins {
     def buildFile = new File(projectDir, 'build.gradle')
     buildFile.text = """
 plugins {
-  id 'io.github.hs_teams.pygradle'
+  id 'io.github.hs-teams.pygradle'
 }
 """.trim() + "\n"
 
@@ -97,7 +97,7 @@ package: other, version: latest
     def buildFile = new File(projectDir, 'build.gradle')
     buildFile.text = """
 plugins {
-  id 'io.github.hs_teams.pygradle'
+  id 'io.github.hs-teams.pygradle'
 }
 """.trim() + "\n"
 
@@ -134,7 +134,7 @@ plugins {
     def buildFile = new File(projectDir, 'build.gradle')
     buildFile.text = """
 plugins {
-  id 'io.github.hs_teams.pygradle'
+  id 'io.github.hs-teams.pygradle'
 }
 """.trim() + "\n"
 
@@ -172,7 +172,7 @@ plugins {
     def buildFile = new File(projectDir, 'build.gradle')
     buildFile.text = """
 plugins {
-  id 'io.github.hs_teams.pygradle'
+  id 'io.github.hs-teams.pygradle'
 }
 """.trim() + "\n"
 
@@ -206,7 +206,7 @@ plugins {
     def buildFile = new File(projectDir, 'build.gradle')
     buildFile.text = """
 plugins {
-  id 'io.github.hs_teams.pygradle'
+  id 'io.github.hs-teams.pygradle'
 }
 """.trim() + "\n"
 
@@ -236,7 +236,7 @@ plugins {
     def buildFile = new File(projectDir, 'build.gradle')
     buildFile.text = """
 plugins {
-  id 'io.github.hs_teams.pygradle'
+  id 'io.github.hs-teams.pygradle'
 }
 
 task printPythonExec {

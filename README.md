@@ -26,7 +26,7 @@ Optional tools (required by specific tasks):
 ## Apply The Plugin
 ```gradle
 plugins {
-  id 'io.github.hs_teams.pygradle'
+  id 'io.github.hs-teams.pygradle'
 }
 ```
 
@@ -38,7 +38,7 @@ rootProject.name = 'pygradle-sample'
 ## Sample build.gradle
 ```gradle
 plugins {
-  id 'io.github.hs_teams.pygradle'
+  id 'io.github.hs-teams.pygradle'
 }
 
 pyGradle {

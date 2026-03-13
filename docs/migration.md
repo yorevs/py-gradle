@@ -22,7 +22,7 @@ Replace those `apply from` lines with the plugin ID:
 
 ```gradle
 plugins {
-  id 'io.github.hs_teams.pygradle'
+  id 'io.github.hs-teams.pygradle'
 }
 ```
 

@@ -13,7 +13,7 @@ def readAppVersion = {
 }
 
 // Set group and version for publishing
-group = 'hs-teams.github.io'
+group = 'io.github.hs-teams'
 version = readAppVersion()
 description = 'Gradle plugin for Python applications.'
 
@@ -86,7 +86,7 @@ gradlePlugin {
   vcsUrl = findProperty('siteUrl') ?: 'https://github.com/hs-teams/py-gradle'
   plugins {
     pyGradle {
-      id = 'io.github.hs_teams.pygradle'
+      id = 'io.github.hs-teams.pygradle'
       implementationClass = 'io.github.hs_teams.pygradle.PyGradlePlugin'
       displayName = 'PyGradle'
       description = 'Gradle plugin for Python applications.'

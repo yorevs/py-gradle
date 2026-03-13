@@ -113,7 +113,7 @@ class PyGradleInitTask extends PyGradleBaseTask {
 
   private String buildGradleContent() {
     """// Build configuration (apply the PyGradle plugin).\n// This gives you tasks like build, lint, test, and packaging.\nplugins {
-  id 'io.github.hs_teams.pygradle'
+  id 'io.github.hs-teams.pygradle'
 }
 """
   }

@@ -1,7 +1,7 @@
 # TODO - Option 2: Standalone Gradle Plugin Project (Prioritized)
 
 ## P0 - Required to Build and Publish
-- [x] Define plugin ID: `io.github.hs_teams.pygradle`.
+- [x] Define plugin ID: `io.github.hs-teams.pygradle`.
 - [x] Set Gradle/Java compatibility targets: Gradle 8.5, Java 21.
 - [x] Create a standalone Gradle plugin project (new module or separate repo).
 - [x] Configure `java-gradle-plugin` + `groovy` and set group/version coordinates.
